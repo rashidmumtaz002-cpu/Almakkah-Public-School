@@ -1,0 +1,1146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="light dark" />
+<meta name="theme-color" content="#0b5d3b" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Al-Makkah SMS" />
+<meta name="description" content="Al-Makkah Public School Management System — students, attendance, fees, exams, diary, notices and WhatsApp messages. Data is saved only in this browser." />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230b5d3b'/%3E%3Cpath d='M50 14 L86 40 V86 H14 V40 Z' fill='%23c9a227'/%3E%3Crect x='38' y='56' width='24' height='30' fill='%230b5d3b'/%3E%3Ccircle cx='50' cy='34' r='7' fill='%23fff'/%3E%3C/svg%3E" />
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230b5d3b'/%3E%3Cpath d='M50 14 L86 40 V86 H14 V40 Z' fill='%23c9a227'/%3E%3Crect x='38' y='56' width='24' height='30' fill='%230b5d3b'/%3E%3Ccircle cx='50' cy='34' r='7' fill='%23fff'/%3E%3C/svg%3E" />
+<title>Al-Makkah Public School — Management System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#f4f6f2; --bg2:#e9efe7; --surface:#ffffff; --surface2:#eef3ec;
+  --ink:#17251c; --ink2:#43544a; --ink3:#71816f;
+  --line:#d8e0d4; --line2:#c3d0bd;
+  --green:#0b5d3b; --green2:#0e7a4e; --green-soft:#e2f0e6;
+  --gold:#c9a227; --gold-soft:#faf0cd;
+  --red:#b3261e; --red-soft:#fbe7e4;
+  --amber:#9a6a00; --amber-soft:#fdf0d3;
+  --blue:#155e8a; --blue-soft:#e2eef6;
+  --wa:#1faa55;
+  --shadow:0 1px 2px rgba(16,42,28,.06),0 8px 24px -12px rgba(16,42,28,.18);
+  --radius:14px;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#0d1511; --bg2:#0a100d; --surface:#16211a; --surface2:#1c2a21;
+    --ink:#e8efe9; --ink2:#b3c2b6; --ink3:#82937f;
+    --line:#2b3a30; --line2:#3a4d3f;
+    --green:#2ea36c; --green2:#35b878; --green-soft:#173325;
+    --gold:#d9b63f; --gold-soft:#332c12;
+    --red:#e5736b; --red-soft:#3a1d1a;
+    --amber:#e0aa3e; --amber-soft:#38300f;
+    --blue:#6db3dd; --blue-soft:#16293a;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.6);
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif;font-size:15px;line-height:1.5}
+h1,h2,h3{font-family:"Source Serif 4",Georgia,serif;line-height:1.2;margin:0}
+button{font:inherit;cursor:pointer}
+input,select,textarea{font:inherit;color:var(--ink)}
+a{color:var(--green2)}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px;border-radius:6px}
+
+/* ---------- Layout ---------- */
+.app{display:flex;min-height:100dvh}
+.sidebar{width:250px;flex:0 0 250px;background:var(--green);color:#eaf5ee;display:flex;flex-direction:column;position:sticky;top:0;height:100dvh;padding:20px 14px calc(16px + env(safe-area-inset-bottom));z-index:30}
+@media (prefers-color-scheme: dark){.sidebar{background:#0e2a1d}}
+.brand{padding:2px 8px 16px;border-bottom:1px solid rgba(255,255,255,.18);margin-bottom:14px}
+.brand .bismillah{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#f3d97a;font-weight:700}
+.brand h1{font-size:21px;color:#fff;margin-top:4px}
+.brand p{margin:3px 0 0;font-size:12.5px;color:#cfe6d6}
+.nav{display:flex;flex-direction:column;gap:2px;overflow-y:auto}
+.nav button{display:flex;align-items:center;gap:11px;width:100%;text-align:left;background:transparent;border:0;color:#dcefe2;padding:10px 10px;border-radius:10px;font-weight:600;font-size:14.5px;min-height:44px}
+.nav button svg{flex:0 0 20px}
+.nav button:hover{background:rgba(255,255,255,.1)}
+.nav button.active{background:#fff;color:var(--green)}
+@media (prefers-color-scheme: dark){.nav button.active{background:#eaf5ee}}
+.side-foot{margin-top:auto;padding:12px 8px 0;border-top:1px solid rgba(255,255,255,.18);font-size:12px;color:#cfe6d6}
+.side-foot button{width:100%;margin-bottom:10px}
+.main{flex:1;min-width:0;padding:22px 22px 110px;max-width:1180px;margin:0 auto;width:100%}
+.topbar{display:none}
+.bottomnav{display:none}
+
+/* ---------- Generic ---------- */
+.view{display:none}
+.view.active{display:block;animation:fade .18s ease}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){.view.active{animation:none}}
+.pagehead{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:18px}
+.pagehead h2{font-size:27px}
+.pagehead .sub{color:var(--ink2);font-size:14px;margin-top:3px;max-width:60ch}
+.actions{display:flex;flex-wrap:wrap;gap:8px}
+.btn{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line2);background:var(--surface);color:var(--ink);padding:9px 15px;border-radius:10px;font-weight:600;font-size:14px;min-height:44px;text-decoration:none;box-shadow:var(--shadow)}
+.btn:hover{border-color:var(--green)}
+.btn.primary{background:var(--green);border-color:var(--green);color:#fff}
+.btn.primary:hover{background:var(--green2)}
+.btn.gold{background:var(--gold);border-color:var(--gold);color:#241c02}
+.btn.wa{background:var(--wa);border-color:var(--wa);color:#fff}
+.btn.danger{color:var(--red);border-color:var(--red)}
+.btn.small{min-height:38px;padding:6px 11px;font-size:13px;box-shadow:none}
+.btn.icon{padding:8px;min-width:40px;justify-content:center}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px}
+.grid{display:grid;gap:14px}
+.grid.c2{grid-template-columns:repeat(2,1fr)}
+.grid.c3{grid-template-columns:repeat(3,1fr)}
+.grid.c4{grid-template-columns:repeat(4,1fr)}
+.stat{padding:16px 18px}
+.stat .label{font-size:12.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ink3)}
+.stat .num{font-family:"Source Serif 4",Georgia,serif;font-size:32px;font-weight:700;margin-top:2px}
+.stat .hint{font-size:13px;color:var(--ink2)}
+.pill{display:inline-flex;align-items:center;gap:5px;padding:2px 10px;border-radius:999px;font-size:12px;font-weight:700}
+.pill.p{background:var(--green-soft);color:var(--green2)}
+.pill.a{background:var(--red-soft);color:var(--red)}
+.pill.l{background:var(--amber-soft);color:var(--amber)}
+.pill.paid{background:var(--green-soft);color:var(--green2)}
+.pill.due{background:var(--red-soft);color:var(--red)}
+.pill.part{background:var(--amber-soft);color:var(--amber)}
+.pill.info{background:var(--blue-soft);color:var(--blue)}
+.empty{border:1.5px dashed var(--line2);border-radius:var(--radius);padding:30px 22px;text-align:center;color:var(--ink2);background:var(--surface)}
+.empty h3{font-size:19px;color:var(--ink);margin-bottom:5px}
+.empty p{margin:0 auto 14px;max-width:46ch;font-size:14px}
+.toolbar{display:flex;flex-wrap:wrap;gap:9px;align-items:center;margin-bottom:14px}
+.toolbar .spacer{flex:1}
+.field{display:flex;flex-direction:column;gap:5px}
+.field label{font-size:12.5px;font-weight:700;color:var(--ink2)}
+.field input,.field select,.field textarea{border:1px solid var(--line2);background:var(--surface);border-radius:9px;padding:10px 11px;min-height:44px;width:100%}
+.field textarea{min-height:90px;resize:vertical}
+.searchbox{position:relative;flex:1;min-width:170px}
+.searchbox input{width:100%;border:1px solid var(--line2);background:var(--surface);border-radius:10px;padding:10px 12px 10px 38px;min-height:44px}
+.searchbox svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--ink3)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink3);padding:9px 10px;border-bottom:2px solid var(--line)}
+td{padding:10px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);box-shadow:var(--shadow)}
+.tablewrap table th:first-child,.tablewrap table td:first-child{padding-left:16px}
+.rowactions{display:flex;gap:6px;flex-wrap:wrap}
+.listcards{display:none}
+.notice-item,.diary-item{padding:14px 0;border-bottom:1px solid var(--line)}
+.notice-item:last-child,.diary-item:last-child{border-bottom:0;padding-bottom:2px}
+.notice-item h3,.diary-item h3{font-size:17px}
+.meta{font-size:12.5px;color:var(--ink3)}
+.seg{display:inline-flex;background:var(--surface2);border:1px solid var(--line);border-radius:11px;padding:3px;gap:3px;flex-wrap:wrap}
+.seg button{border:0;background:transparent;padding:8px 14px;border-radius:8px;font-weight:600;font-size:13.5px;min-height:38px;color:var(--ink2)}
+.seg button.on{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+.attbtns{display:inline-flex;gap:5px}
+.attbtns button{border:1px solid var(--line2);background:var(--surface);border-radius:8px;width:40px;height:40px;font-weight:800;font-size:13px;color:var(--ink2)}
+.attbtns button.onP{background:var(--green);border-color:var(--green);color:#fff}
+.attbtns button.onA{background:var(--red);border-color:var(--red);color:#fff}
+.attbtns button.onL{background:var(--gold);border-color:var(--gold);color:#241c02}
+.progress{height:9px;background:var(--surface2);border-radius:99px;overflow:hidden}
+.progress i{display:block;height:100%;background:var(--green2);border-radius:99px}
+
+/* ---------- Modal / sheet ---------- */
+.overlay{position:fixed;inset:0;background:rgba(8,20,13,.55);display:none;align-items:flex-end;justify-content:center;z-index:60;padding:0}
+.overlay.open{display:flex}
+.sheet{background:var(--surface);width:100%;max-width:560px;max-height:92dvh;overflow-y:auto;border-radius:18px 18px 0 0;padding:22px 20px calc(20px + env(safe-area-inset-bottom))}
+@media(min-width:640px){.overlay{align-items:center;padding:18px}.sheet{border-radius:18px}}
+.sheet h3{font-size:21px;margin-bottom:4px}
+.sheet .sub{color:var(--ink2);font-size:13.5px;margin-bottom:16px}
+.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.formgrid .full{grid-column:1/-1}
+.sheet .foot{display:flex;gap:9px;justify-content:flex-end;margin-top:18px;flex-wrap:wrap}
+
+/* ---------- Toast / banners ---------- */
+.toast{position:fixed;left:50%;bottom:calc(86px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--bg);padding:11px 18px;border-radius:11px;font-weight:600;font-size:14px;opacity:0;pointer-events:none;transition:.25s;z-index:90;max-width:92vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%)}
+@media(min-width:861px){.toast{bottom:26px}}
+#offlineBar{display:none;background:var(--amber-soft);color:var(--amber);border-bottom:1px solid var(--gold);padding:9px 16px;font-size:13.5px;font-weight:600;text-align:center}
+#offlineBar.show{display:block}
+#offlineBar button{margin-left:10px;border:1px solid currentColor;background:transparent;color:inherit;border-radius:7px;padding:3px 10px;font-weight:700}
+.offline-full{display:none;min-height:100dvh;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px;background:var(--bg)}
+.offline-full.show{display:flex}
+.offline-full h2{font-size:26px;margin:14px 0 6px}
+.offline-full p{color:var(--ink2);max-width:42ch}
+
+/* ---------- Print ---------- */
+#printArea{display:none}
+@media print{
+  body>*{display:none !important}
+  body>#printArea{display:block !important}
+  #printArea{color:#000;background:#fff;font-family:Georgia,serif}
+  .voucher{border:2px solid #000;padding:18px;margin-bottom:22px;page-break-inside:avoid}
+  .voucher h2{font-size:20px;text-align:center;margin:0}
+  .voucher .c{text-align:center}
+  .voucher table{font-size:13px}
+  .voucher td,.voucher th{border:1px solid #999;padding:6px 8px;color:#000}
+  .dmc{border:2px solid #000;padding:22px;page-break-inside:avoid}
+  .dmc h2{text-align:center;margin:0}
+  .dmc table{font-size:13px}
+  .dmc td,.dmc th{border:1px solid #999;padding:6px 8px;color:#000}
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width:860px){
+  .sidebar{display:none}
+  .main{padding:14px 14px 96px}
+  .topbar{display:flex;align-items:center;gap:10px;background:var(--green);color:#fff;margin:-14px -14px 16px;padding:calc(12px + env(safe-area-inset-top)) 16px 12px;position:sticky;top:0;z-index:40}
+  .topbar h1{font-size:17.5px;color:#fff}
+  .topbar p{margin:0;font-size:11.5px;color:#cfe6d6}
+  .topbar .btn{margin-left:auto;background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.35);color:#fff;box-shadow:none;min-height:40px;padding:7px 12px}
+  .bottomnav{display:flex;position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);z-index:50;padding-bottom:env(safe-area-inset-bottom)}
+  .bottomnav button{flex:1;background:none;border:0;padding:8px 2px 7px;font-size:11px;font-weight:600;color:var(--ink2);display:flex;flex-direction:column;align-items:center;gap:3px;min-height:58px;justify-content:center}
+  .bottomnav button.active{color:var(--green2)}
+  .grid.c4,.grid.c3{grid-template-columns:repeat(2,1fr)}
+  .grid.c2{grid-template-columns:1fr}
+  .tablewrap{display:none}
+  .listcards{display:flex;flex-direction:column;gap:10px}
+  .listcards .card{padding:14px 16px}
+  .formgrid{grid-template-columns:1fr}
+  .pagehead h2{font-size:23px}
+}
+.kv{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-bottom:1px dashed var(--line);font-size:14px}
+.kv:last-child{border-bottom:0}
+.kv b{text-align:right}
+.mut{color:var(--ink2);font-size:13.5px}
+.storage-note{background:var(--gold-soft);border:1px solid var(--gold);border-radius:var(--radius);padding:13px 16px;font-size:13.5px;margin-bottom:16px}
+.storage-note b{color:var(--ink)}
+</style>
+</head>
+<body>
+<div id="offlineBar">No internet connection — the system still works, and your saved data is safe in this browser. <button onclick="location.reload()">Retry</button></div>
+
+<div class="offline-full" id="offlineFull">
+  <svg width="72" height="72" viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="20" fill="#0b5d3b"/><path d="M50 14 L86 40 V86 H14 V40 Z" fill="#c9a227"/><rect x="38" y="56" width="24" height="30" fill="#0b5d3b"/><circle cx="50" cy="34" r="7" fill="#fff"/></svg>
+  <h2>You are offline</h2>
+  <p>This device has no internet connection right now. Your school data is saved in this browser and will be here when you come back.</p>
+  <button class="btn primary" onclick="location.reload()" style="margin-top:14px">Try again</button>
+</div>
+
+<div class="app" id="appShell">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="bismillah">Bismillah ir-Rahman ir-Rahim</div>
+      <h1 id="brandName">Al-Makkah Public School</h1>
+      <p id="brandMeta">Basti Siddique Abad · Session 2026-27</p>
+    </div>
+    <nav class="nav" id="sideNav" aria-label="Main"></nav>
+    <div class="side-foot">
+      <button class="btn gold" id="installBtnSide" onclick="handleInstall()">⬇ Install App</button>
+      Data is saved only in this browser — nothing is uploaded anywhere.
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <h1 id="topName">Al-Makkah Public School</h1>
+        <p id="topMeta">Basti Siddique Abad · 2026-27</p>
+      </div>
+      <button class="btn" onclick="handleInstall()">⬇ Install App</button>
+    </div>
+    <div id="views"></div>
+  </main>
+</div>
+
+<nav class="bottomnav" id="bottomNav" aria-label="Mobile"></nav>
+
+<div class="overlay" id="overlay"><div class="sheet" id="sheet" role="dialog" aria-modal="true"></div></div>
+<div class="toast" id="toast" role="status"></div>
+<div id="printArea"></div>
+
+<script>
+"use strict";
+/* ================================================================
+   Al-Makkah Public School Management System — single-file edition
+   All data lives in this browser's localStorage only.
+   ================================================================ */
+var LS_KEY = "almakkah_sms_v1";
+var CLASSES = ["Nursery","KG","1","2","3","4","5","6","7","8","9","10"];
+
+function blankState(){
+  return {
+    settings:{ name:"Al-Makkah Public School", location:"Basti Siddique Abad", session:"2026-27", principal:"", phone:"" },
+    students:[], teachers:[], attendance:{}, fees:[], exams:[], marks:{},
+    diary:[], notices:[], expenses:[]
+  };
+}
+var DB = loadDB();
+function loadDB(){
+  try{ var raw = localStorage.getItem(LS_KEY); if(raw){ var d = JSON.parse(raw); var b = blankState(); for(var k in b){ if(d[k]===undefined) d[k]=b[k]; } return d; } }catch(e){}
+  return blankState();
+}
+function saveDB(){ try{ localStorage.setItem(LS_KEY, JSON.stringify(DB)); }catch(e){ toast("Storage is full — please export a backup from Settings."); } }
+function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+function money(n){ n = Number(n)||0; return "Rs " + n.toLocaleString("en-PK"); }
+function todayStr(){ var d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+function monthStr(d){ d=d||new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0"); }
+function monthName(ym){ if(!ym) return ""; var p=ym.split("-"); var names=["January","February","March","April","May","June","July","August","September","October","November","December"]; return names[Number(p[1])-1]+" "+p[0]; }
+function fmtDate(s){ if(!s) return "—"; var p=s.split("-"); if(p.length!==3) return s; var names=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]; return Number(p[2])+" "+names[Number(p[1])-1]+" "+p[0]; }
+function waNum(phone){ var d = String(phone||"").replace(/\D/g,""); if(!d) return ""; if(d.charAt(0)==="0") d = "92"+d.slice(1); else if(d.length===10 && d.charAt(0)==="3") d = "92"+d; return d; }
+function waLink(phone, text){ var n = waNum(phone); if(!n) return ""; return "https://wa.me/"+n+"?text="+encodeURIComponent(text); }
+function studentById(id){ for(var i=0;i<DB.students.length;i++) if(DB.students[i].id===id) return DB.students[i]; return null; }
+function classLabel(c){ return (c==="Nursery"||c==="KG") ? c : "Class "+c; }
+function toast(msg){ var t=document.getElementById("toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(t._h); t._h=setTimeout(function(){ t.classList.remove("show"); },2600); }
+
+/* ---------------- Navigation ---------------- */
+var ICONS = {
+  home:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg>',
+  students:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.2 3.4-5 6.5-5s5.7 1.8 6.5 5"/><circle cx="17.5" cy="9" r="2.6"/><path d="M16 15.2c2.6.2 4.7 1.8 5.5 4.8"/></svg>',
+  attendance:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4M9 15l2 2 4-4"/></svg>',
+  fees:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2.5" y="6" width="19" height="12" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M6 9.5h.01M18 14.5h.01"/></svg>',
+  exams:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2.5h9L19.5 7v14.5h-13.5z"/><path d="M14.5 2.5v5h5M9 12h6M9 16h6"/></svg>',
+  teachers:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="7.5" r="3.5"/><path d="M5 21c.9-3.8 3.7-5.8 7-5.8s6.1 2 7 5.8"/></svg>',
+  diary:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3h13a1 1 0 0 1 1 1v17l-3.5-2.4L12 21l-3.5-2.4L5 21z"/><path d="M8.5 8h7M8.5 12h7"/></svg>',
+  notices:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10v4h3l7 5V5L7 10z"/><path d="M17.5 9.5a4 4 0 0 1 0 5"/></svg>',
+  expenses:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 3h16v18l-2.6-1.7L14.7 21l-2.7-1.7L9.3 21 6.6 19.3 4 21z"/><path d="M8 8h8M8 12h8"/></svg>',
+  whatsapp:'<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.2 14.2c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.4-.7-2.9-1.2-4.7-4.1-4.9-4.3-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .6l-.4.6-.4.5c-.1.1-.3.3-.1.6.2.3.7 1.2 1.6 1.9 1.1.9 2 1.2 2.3 1.3.3.1.5.1.6-.1l1-1.2c.2-.3.4-.2.7-.1l2.1 1c.3.2.5.3.6.4 0 .1 0 .7-.2 1.2z"/></svg>',
+  settings:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3.2"/><path d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3 1a7 7 0 0 0-2-1.2L14.2 3h-4l-.4 2.7a7 7 0 0 0-2 1.2l-2.3-1-2 3.4 2 1.5A7 7 0 0 0 5 12c0 .4 0 .8.1 1.2l-2 1.5 2 3.4 2.3-1a7 7 0 0 0 2 1.2l.4 2.7h4l.4-2.7a7 7 0 0 0 2-1.2l2.3 1 2-3.4-2-1.5c.1-.4.1-.8.1-1.2z"/></svg>',
+  more:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg>',
+  search:'<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20.5 20.5L16.6 16.6"/></svg>'
+};
+var SECTIONS = [
+  {id:"home", label:"Home", icon:"home"},
+  {id:"students", label:"Students", icon:"students"},
+  {id:"attendance", label:"Attendance", icon:"attendance"},
+  {id:"fees", label:"Fees", icon:"fees"},
+  {id:"exams", label:"Exams & Results", icon:"exams"},
+  {id:"teachers", label:"Teachers", icon:"teachers"},
+  {id:"diary", label:"Daily Diary", icon:"diary"},
+  {id:"notices", label:"Notices", icon:"notices"},
+  {id:"expenses", label:"Expenses", icon:"expenses"},
+  {id:"whatsapp", label:"WhatsApp Centre", icon:"whatsapp"},
+  {id:"settings", label:"School Settings", icon:"settings"}
+];
+var currentView = "home";
+function buildNav(){
+  var side = document.getElementById("sideNav");
+  side.innerHTML = SECTIONS.map(function(s){ return '<button data-view="'+s.id+'" onclick="go(\''+s.id+'\')">'+ICONS[s.icon]+esc(s.label)+'</button>'; }).join("");
+  var main5 = ["home","students","attendance","fees"];
+  var bn = document.getElementById("bottomNav");
+  bn.innerHTML = main5.map(function(id){ var s=SECTIONS.filter(function(x){return x.id===id;})[0]; return '<button data-view="'+id+'" onclick="go(\''+id+'\')">'+ICONS[s.icon]+esc(s.label)+'</button>'; }).join("")
+    + '<button data-view="more" onclick="openMore()">'+ICONS.more+'More</button>';
+}
+function openMore(){
+  var rest = SECTIONS.filter(function(s){ return ["home","students","attendance","fees"].indexOf(s.id)===-1; });
+  openSheet('<h3>All sections</h3><div class="sub">Al-Makkah Public School Management System</div>'
+    + rest.map(function(s){ return '<button class="btn" style="width:100%;justify-content:flex-start;margin-bottom:8px" onclick="closeSheet();go(\''+s.id+'\')">'+ICONS[s.icon]+esc(s.label)+'</button>'; }).join(""));
+}
+function go(view){
+  currentView = view;
+  document.querySelectorAll("#sideNav button, #bottomNav button").forEach(function(b){ b.classList.toggle("active", b.getAttribute("data-view")===view); });
+  render();
+  window.scrollTo({top:0});
+}
+function render(){
+  var v = document.getElementById("views");
+  var html = "";
+  if(currentView==="home") html = viewHome();
+  else if(currentView==="students") html = viewStudents();
+  else if(currentView==="attendance") html = viewAttendance();
+  else if(currentView==="fees") html = viewFees();
+  else if(currentView==="exams") html = viewExams();
+  else if(currentView==="teachers") html = viewTeachers();
+  else if(currentView==="diary") html = viewDiary();
+  else if(currentView==="notices") html = viewNotices();
+  else if(currentView==="expenses") html = viewExpenses();
+  else if(currentView==="whatsapp") html = viewWhatsApp();
+  else if(currentView==="settings") html = viewSettings();
+  v.innerHTML = '<section class="view active">'+html+'</section>';
+  afterRender();
+}
+function afterRender(){ /* per-view hooks set inline where needed */ }
+function pageHead(title, sub, actionsHtml){
+  return '<div class="pagehead"><div><h2>'+esc(title)+'</h2>'+(sub?'<div class="sub">'+esc(sub)+'</div>':"")+'</div><div class="actions">'+(actionsHtml||"")+'</div></div>';
+}
+function emptyState(title, text, btnHtml){
+  return '<div class="empty"><h3>'+esc(title)+'</h3><p>'+esc(text)+'</p>'+(btnHtml||"")+'</div>';
+}
+function openSheet(html){ document.getElementById("sheet").innerHTML = html; document.getElementById("overlay").classList.add("open"); }
+function closeSheet(){ document.getElementById("overlay").classList.remove("open"); }
+document.getElementById("overlay").addEventListener("click", function(e){ if(e.target===this) closeSheet(); });
+function confirmSheet(title, text, btnLabel, fnName){
+  openSheet('<h3>'+esc(title)+'</h3><div class="sub">'+esc(text)+'</div><div class="foot"><button class="btn" onclick="closeSheet()">Cancel</button><button class="btn danger" onclick="'+fnName+'">'+esc(btnLabel)+'</button></div>');
+}
+function fieldHtml(label, inner, full){ return '<div class="field'+(full?" full":"")+'"><label>'+esc(label)+'</label>'+inner+'</div>'; }
+function inp(id, val, type, extra){ return '<input id="'+id+'" type="'+(type||"text")+'" value="'+esc(val==null?"":val)+'" '+(extra||"")+' />'; }
+function sel(id, val, options){ return '<select id="'+id+'">'+options.map(function(o){ return '<option value="'+esc(o.v)+'"'+(String(o.v)===String(val)?" selected":"")+'>'+esc(o.t)+'</option>'; }).join("")+'</select>'; }
+function classOptions(val){ return CLASSES.map(function(c){ return {v:c, t:classLabel(c)}; }); }
+function val(id){ var el=document.getElementById(id); return el? el.value.trim() : ""; }
+function numVal(id){ return Number(val(id))||0; }
+</script>
+<script>
+"use strict";
+/* ---------------- HOME ---------------- */
+function feeStatsForMonth(ym){
+  var due=0, got=0;
+  DB.fees.forEach(function(f){ if(f.month===ym && studentById(f.studentId)){ due += Number(f.amount)||0; got += Number(f.paid)||0; } });
+  return {due:due, got:got, pending:due-got};
+}
+function viewHome(){
+  var t = todayStr(), ym = monthStr();
+  var att = DB.attendance[t] || {};
+  var p=0,a=0,l=0;
+  DB.students.forEach(function(s){ var st = att[s.id]; if(st==="P")p++; else if(st==="A")a++; else if(st==="L")l++; });
+  var marked = p+a+l;
+  var fs = feeStatsForMonth(ym);
+  var expMonth = DB.expenses.filter(function(e){ return (e.date||"").slice(0,7)===ym; }).reduce(function(s,e){ return s+(Number(e.amount)||0); },0);
+  var pctCollected = fs.due>0 ? Math.round(fs.got/fs.due*100) : 0;
+  var latestNotices = DB.notices.slice().sort(function(x,y){ return y.date<x.date?-1:1; }).slice(0,3);
+  var h = pageHead(DB.settings.name, DB.settings.location+" · Session "+DB.settings.session+" · "+fmtDate(t),
+      '<button class="btn primary" onclick="go(\'attendance\')">Take today\'s attendance</button><button class="btn" onclick="studentForm()">+ Admit student</button>');
+  h += '<div class="storage-note"><b>Your data stays on this device.</b> Everything you enter is saved only in this browser (local storage) — there is no server and nothing is uploaded. Use Settings → Export backup to keep a copy, and import it on another device to move your data.</div>';
+  h += '<div class="grid c4">'
+    + '<div class="card stat"><div class="label">Total students</div><div class="num">'+DB.students.length+'</div><div class="hint">'+DB.teachers.length+' teachers on staff</div></div>'
+    + '<div class="card stat"><div class="label">Present today</div><div class="num" style="color:var(--green2)">'+p+'</div><div class="hint">'+l+' late · '+marked+' of '+DB.students.length+' marked</div></div>'
+    + '<div class="card stat"><div class="label">Absent today</div><div class="num" style="color:var(--red)">'+a+'</div><div class="hint">'+(a>0?'<a href="#" onclick="go(\'attendance\');return false;">Send WhatsApp alerts →</a>':'No absences recorded')+'</div></div>'
+    + '<div class="card stat"><div class="label">Fees collected · '+esc(monthName(ym))+'</div><div class="num">'+money(fs.got)+'</div><div class="hint">'+money(fs.pending)+' still pending of '+money(fs.due)+'</div></div>'
+    + '</div>';
+  h += '<div class="grid c2" style="margin-top:14px">';
+  h += '<div class="card"><h3 style="font-size:18px;margin-bottom:10px">This month\'s fee collection</h3>'
+    + '<div class="progress"><i style="width:'+pctCollected+'%"></i></div>'
+    + '<div class="kv"><span>Challans issued</span><b>'+money(fs.due)+'</b></div>'
+    + '<div class="kv"><span>Collected</span><b>'+money(fs.got)+' ('+pctCollected+'%)</b></div>'
+    + '<div class="kv"><span>Pending</span><b>'+money(fs.pending)+'</b></div>'
+    + '<div class="kv"><span>Expenses this month</span><b>'+money(expMonth)+'</b></div>'
+    + '<div style="margin-top:12px"><button class="btn small primary" onclick="go(\'fees\')">Open Fees</button></div></div>';
+  h += '<div class="card"><h3 style="font-size:18px;margin-bottom:6px">Latest notices</h3>';
+  if(!latestNotices.length) h += '<p class="mut">No notices yet. Post the first announcement from the Notices section.</p>';
+  latestNotices.forEach(function(n){ h += '<div class="notice-item"><div class="meta">'+fmtDate(n.date)+'</div><h3>'+esc(n.title)+'</h3><div class="mut">'+esc(n.body)+'</div></div>'; });
+  h += '<div style="margin-top:10px"><button class="btn small" onclick="go(\'notices\')">All notices</button> <button class="btn small wa" onclick="go(\'whatsapp\')">WhatsApp Centre</button></div></div>';
+  h += '</div>';
+  if(DB.students.length===0){
+    h += '<div style="margin-top:14px">'+emptyState("Start by admitting your first student","The system starts empty on purpose — add your real students, then attendance, fees, diary and results will build on them.",'<button class="btn primary" onclick="studentForm()">+ Admit student</button> <button class="btn" onclick="go(\'settings\')">Check school settings</button>')+'</div>';
+  }
+  return h;
+}
+
+/* ---------------- STUDENTS ---------------- */
+var studentFilter = {q:"", cls:""};
+function viewStudents(){
+  var h = pageHead("Students","Admissions, classes and guardian WhatsApp numbers.",'<button class="btn primary" onclick="studentForm()">+ Admit student</button>');
+  h += '<div class="toolbar"><div class="searchbox">'+ICONS.search+'<input id="stuQ" type="search" placeholder="Search name, roll or guardian…" value="'+esc(studentFilter.q)+'" oninput="studentFilter.q=this.value;renderStudentRows()" /></div>'
+    + '<select id="stuCls" onchange="studentFilter.cls=this.value;renderStudentRows()" style="border:1px solid var(--line2);background:var(--surface);border-radius:10px;padding:10px;min-height:44px"><option value="">All classes</option>'
+    + CLASSES.map(function(c){ return '<option value="'+c+'"'+(studentFilter.cls===c?" selected":"")+'>'+classLabel(c)+'</option>'; }).join("")+'</select>'
+    + '<span class="mut" id="stuCount"></span></div>';
+  h += '<div id="stuList"></div>';
+  setTimeout(renderStudentRows, 0);
+  return h;
+}
+function filteredStudents(){
+  return DB.students.filter(function(s){
+    if(studentFilter.cls && s.cls!==studentFilter.cls) return false;
+    if(studentFilter.q){ var q=studentFilter.q.toLowerCase(); var hay=(s.name+" "+s.roll+" "+s.guardian+" "+s.father).toLowerCase(); if(hay.indexOf(q)===-1) return false; }
+    return true;
+  }).sort(function(a,b){ var ca=CLASSES.indexOf(a.cls), cb=CLASSES.indexOf(b.cls); if(ca!==cb) return ca-cb; return String(a.roll).localeCompare(String(b.roll), undefined, {numeric:true}); });
+}
+function renderStudentRows(){
+  var el = document.getElementById("stuList"); if(!el) return;
+  var list = filteredStudents();
+  var cnt = document.getElementById("stuCount"); if(cnt) cnt.textContent = list.length + " student" + (list.length===1?"":"s");
+  if(DB.students.length===0){ el.innerHTML = emptyState("No students yet","Admit your first student to begin. Guardian WhatsApp numbers power the attendance alerts and fee reminders.",'<button class="btn primary" onclick="studentForm()">+ Admit student</button>'); return; }
+  if(!list.length){ el.innerHTML = emptyState("No match","No student matches this search or class filter."); return; }
+  var rows = list.map(function(s){
+    var wa = waLink(s.phone, "Assalam-o-Alaikum, this is "+DB.settings.name+".");
+    return '<tr><td><b>'+esc(s.name)+'</b><div class="meta">'+esc(classLabel(s.cls))+(s.section?' · Sec '+esc(s.section):"")+' · Roll '+esc(s.roll||"—")+'</div></td>'
+      + '<td>'+esc(s.guardian||"—")+'<div class="meta">'+esc(s.phone||"")+'</div></td>'
+      + '<td>'+money(s.fee)+'<div class="meta">per month</div></td>'
+      + '<td><div class="rowactions">'
+      + (wa? '<a class="btn small wa" target="_blank" rel="noopener" href="'+wa+'">WhatsApp</a>' : '')
+      + '<button class="btn small" onclick="studentForm(\''+s.id+'\')">Edit</button>'
+      + '<button class="btn small danger" onclick="askDeleteStudent(\''+s.id+'\')">Delete</button></div></td></tr>';
+  }).join("");
+  var cards = list.map(function(s){
+    var wa = waLink(s.phone, "Assalam-o-Alaikum, this is "+DB.settings.name+".");
+    return '<div class="card"><b>'+esc(s.name)+'</b><div class="meta">'+esc(classLabel(s.cls))+(s.section?' · Sec '+esc(s.section):"")+' · Roll '+esc(s.roll||"—")+' · Fee '+money(s.fee)+'/month</div>'
+      + '<div class="mut" style="margin:5px 0 9px">Guardian: '+esc(s.guardian||"—")+' · '+esc(s.phone||"")+'</div><div class="rowactions">'
+      + (wa? '<a class="btn small wa" target="_blank" rel="noopener" href="'+wa+'">WhatsApp</a>' : '')
+      + '<button class="btn small" onclick="studentForm(\''+s.id+'\')">Edit</button>'
+      + '<button class="btn small danger" onclick="askDeleteStudent(\''+s.id+'\')">Delete</button></div></div>';
+  }).join("");
+  el.innerHTML = '<div class="tablewrap"><table><thead><tr><th>Student</th><th>Guardian</th><th>Monthly fee</th><th>Actions</th></tr></thead><tbody>'+rows+'</tbody></table></div><div class="listcards">'+cards+'</div>';
+}
+function studentForm(id){
+  var s = id? studentById(id) : {name:"", cls:"1", section:"", roll:"", father:"", guardian:"", phone:"", fee:"", admissionDate:todayStr(), gender:"Boy"};
+  if(!s) return;
+  openSheet('<h3>'+(id?"Edit student":"Admit new student")+'</h3><div class="sub">Guardian WhatsApp number is used for absent alerts, fee reminders and messages.</div>'
+    + '<div class="formgrid">'
+    + fieldHtml("Student full name", inp("f_name", s.name, "text", 'autocomplete="off"'), true)
+    + fieldHtml("Class", sel("f_cls", s.cls, classOptions()))
+    + fieldHtml("Section", inp("f_section", s.section))
+    + fieldHtml("Roll number", inp("f_roll", s.roll))
+    + fieldHtml("Gender", sel("f_gender", s.gender, [{v:"Boy",t:"Boy"},{v:"Girl",t:"Girl"}]))
+    + fieldHtml("Father name", inp("f_father", s.father))
+    + fieldHtml("Guardian name", inp("f_guardian", s.guardian))
+    + fieldHtml("Guardian WhatsApp number", inp("f_phone", s.phone, "tel", 'placeholder="03xx xxxxxxx"'))
+    + fieldHtml("Monthly fee (Rs)", inp("f_fee", s.fee, "number", 'min="0" inputmode="numeric"'))
+    + fieldHtml("Admission date", inp("f_adm", s.admissionDate, "date"))
+    + '</div><div class="foot"><button class="btn" onclick="closeSheet()">Cancel</button><button class="btn primary" onclick="saveStudent('+(id?"'"+id+"'":"null")+')">'+(id?"Save changes":"Admit student")+'</button></div>');
+  setTimeout(function(){ var e=document.getElementById("f_name"); if(e) e.focus(); }, 50);
+}
+function saveStudent(id){
+  var name = val("f_name"); if(!name){ toast("Please enter the student's name."); return; }
+  var data = { name:name, cls:val("f_cls"), section:val("f_section"), roll:val("f_roll"), gender:val("f_gender"), father:val("f_father"), guardian:val("f_guardian"), phone:val("f_phone"), fee:numVal("f_fee"), admissionDate:val("f_adm")||todayStr() };
+  if(id){ var s = studentById(id); for(var k in data) s[k]=data[k]; toast("Student updated."); }
+  else { data.id = uid(); DB.students.push(data); toast("Student admitted."); }
+  saveDB(); closeSheet(); render();
+}
+function askDeleteStudent(id){
+  var s = studentById(id); if(!s) return;
+  var feeCount = DB.fees.filter(function(f){ return f.studentId===id; }).length;
+  openSheet('<h3>Delete '+esc(s.name)+'?</h3><div class="sub">This permanently removes the student <b>and all of their records</b> — '+feeCount+' fee record(s), their attendance history and their exam marks — so dashboard totals stay correct. This cannot be undone.</div>'
+    + '<div class="foot"><button class="btn" onclick="closeSheet()">Cancel</button><button class="btn danger" onclick="deleteStudent(\''+id+'\')">Delete student &amp; records</button></div>');
+}
+function deleteStudent(id){
+  DB.students = DB.students.filter(function(s){ return s.id!==id; });
+  DB.fees = DB.fees.filter(function(f){ return f.studentId!==id; });
+  Object.keys(DB.attendance).forEach(function(d){ if(DB.attendance[d]) delete DB.attendance[d][id]; });
+  Object.keys(DB.marks).forEach(function(exId){ if(DB.marks[exId]) delete DB.marks[exId][id]; });
+  saveDB(); closeSheet(); toast("Student and all their records deleted."); render();
+}
+
+/* ---------------- ATTENDANCE ---------------- */
+var attDate = todayStr(), attCls = "";
+function viewAttendance(){
+  var h = pageHead("Daily Attendance","Mark present, absent or late — then send one-tap WhatsApp alerts to guardians of absent and late students.",
+    '<button class="btn" onclick="markAllPresent()">Mark all present</button>');
+  h += '<div class="toolbar">'
+    + '<div class="field"><label>Date</label><input type="date" value="'+attDate+'" onchange="attDate=this.value;render()" style="border:1px solid var(--line2);background:var(--surface);border-radius:9px;padding:9px;min-height:44px" /></div>'
+    + '<div class="field"><label>Class</label><select onchange="attCls=this.value;render()" style="border:1px solid var(--line2);background:var(--surface);border-radius:9px;padding:9px;min-height:44px"><option value="">All classes</option>'
+    + CLASSES.map(function(c){ return '<option value="'+c+'"'+(attCls===c?" selected":"")+'>'+classLabel(c)+'</option>'; }).join("")+'</select></div>'
+    + '<span class="spacer"></span><span id="attSummary" class="mut"></span></div>';
+  h += '<div id="attList"></div>';
+  setTimeout(renderAttRows, 0);
+  return h;
+}
+function attStudents(){ return DB.students.filter(function(s){ return !attCls || s.cls===attCls; }).sort(function(a,b){ var ca=CLASSES.indexOf(a.cls), cb=CLASSES.indexOf(b.cls); if(ca!==cb) return ca-cb; return String(a.roll).localeCompare(String(b.roll), undefined, {numeric:true}); }); }
+function renderAttRows(){
+  var el = document.getElementById("attList"); if(!el) return;
+  if(DB.students.length===0){ el.innerHTML = emptyState("No students yet","Admit students first, then take daily attendance here.",'<button class="btn primary" onclick="studentForm()">+ Admit student</button>'); return; }
+  var list = attStudents();
+  var day = DB.attendance[attDate] || {};
+  var p=0,a=0,l=0; DB.students.forEach(function(s){ if(day[s.id]==="P")p++; else if(day[s.id]==="A")a++; else if(day[s.id]==="L")l++; });
+  var sum = document.getElementById("attSummary"); if(sum) sum.textContent = fmtDate(attDate)+": "+p+" present · "+a+" absent · "+l+" late (whole school)";
+  if(!list.length){ el.innerHTML = emptyState("No students in this class","Choose another class or admit students to it."); return; }
+  function attBtns(s){
+    var st = day[s.id]||"";
+    return '<span class="attbtns">'
+      + '<button class="'+(st==="P"?"onP":"")+'" title="Present" onclick="setAtt(\''+s.id+'\',\'P\')">P</button>'
+      + '<button class="'+(st==="A"?"onA":"")+'" title="Absent" onclick="setAtt(\''+s.id+'\',\'A\')">A</button>'
+      + '<button class="'+(st==="L"?"onL":"")+'" title="Late" onclick="setAtt(\''+s.id+'\',\'L\')">L</button></span>';
+  }
+  function alertBtn(s){
+    var st = day[s.id];
+    if(st!=="A" && st!=="L") return '<span class="mut">—</span>';
+    var msg = st==="A"
+      ? "Assalam-o-Alaikum, this is "+DB.settings.name+". Your child "+s.name+" ("+classLabel(s.cls)+") is ABSENT today, "+fmtDate(attDate)+". Please inform the school of the reason. JazakAllah."
+      : "Assalam-o-Alaikum, this is "+DB.settings.name+". Your child "+s.name+" ("+classLabel(s.cls)+") arrived LATE today, "+fmtDate(attDate)+". Please make sure they reach school on time. JazakAllah.";
+    var link = waLink(s.phone, msg);
+    return link? '<a class="btn small wa" target="_blank" rel="noopener" href="'+link+'">'+(st==="A"?"Absent alert":"Late alert")+'</a>' : '<span class="pill due">No WhatsApp no.</span>';
+  }
+  var rows = list.map(function(s){ return '<tr><td><b>'+esc(s.name)+'</b><div class="meta">'+esc(classLabel(s.cls))+' · Roll '+esc(s.roll||"—")+'</div></td><td>'+attBtns(s)+'</td><td>'+alertBtn(s)+'</td></tr>'; }).join("");
+  var cards = list.map(function(s){ return '<div class="card"><div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap"><div><b>'+esc(s.name)+'</b><div class="meta">'+esc(classLabel(s.cls))+' · Roll '+esc(s.roll||"—")+'</div></div>'+attBtns(s)+'</div><div style="margin-top:9px">'+alertBtn(s)+'</div></div>'; }).join("");
+  el.innerHTML = '<div class="tablewrap"><table><thead><tr><th>Student</th><th>Status</th><th>Guardian alert</th></tr></thead><tbody>'+rows+'</tbody></table></div><div class="listcards">'+cards+'</div>'
+    + '<p class="mut" style="margin-top:12px">Tap P / A / L to mark. Alerts open WhatsApp with the message ready — just press send there. Changes save automatically in this browser.</p>';
+}
+function setAtt(id, st){
+  if(!DB.attendance[attDate]) DB.attendance[attDate] = {};
+  DB.attendance[attDate][id] = (DB.attendance[attDate][id]===st) ? undefined : st;
+  if(DB.attendance[attDate][id]===undefined) delete DB.attendance[attDate][id];
+  saveDB(); renderAttRows(); if(currentView==="attendance"){ var v=document.getElementById("views"); }
+}
+function markAllPresent(){
+  if(!DB.attendance[attDate]) DB.attendance[attDate] = {};
+  attStudents().forEach(function(s){ DB.attendance[attDate][s.id] = "P"; });
+  saveDB(); renderAttRows(); toast("All shown students marked present for "+fmtDate(attDate)+".");
+}
+</script>
+<script>
+"use strict";
+/* ---------------- FEES ---------------- */
+var feeMonth = monthStr(), feeFilter = "all";
+function feeStatus(f){ var amt=Number(f.amount)||0, paid=Number(f.paid)||0; if(paid<=0) return "due"; if(paid>=amt) return "paid"; return "part"; }
+function viewFees(){
+  var h = pageHead("Fees","Generate monthly challans for every student, record payments, print vouchers and send WhatsApp reminders.",
+    '<button class="btn" onclick="feeForm()">+ Single challan</button><button class="btn primary" onclick="askGenerateChallans()">Generate challans for '+esc(monthName(feeMonth))+'</button>');
+  h += '<div class="toolbar"><div class="field"><label>Month</label><input type="month" value="'+feeMonth+'" onchange="feeMonth=this.value;render()" style="border:1px solid var(--line2);background:var(--surface);border-radius:9px;padding:9px;min-height:44px" /></div>'
+    + '<div class="seg">'
+    + [["all","All"],["due","Unpaid"],["part","Partial"],["paid","Paid"]].map(function(o){ return '<button class="'+(feeFilter===o[0]?"on":"")+'" onclick="feeFilter=\''+o[0]+'\';render()">'+o[1]+'</button>'; }).join("")
+    + '</div><span class="spacer"></span><span id="feeSummary" class="mut"></span></div>';
+  h += '<div id="feeList"></div>';
+  setTimeout(renderFeeRows, 0);
+  return h;
+}
+function renderFeeRows(){
+  var el = document.getElementById("feeList"); if(!el) return;
+  var all = DB.fees.filter(function(f){ return f.month===feeMonth && studentById(f.studentId); });
+  var fs = feeStatsForMonth(feeMonth);
+  var sum = document.getElementById("feeSummary"); if(sum) sum.textContent = monthName(feeMonth)+": issued "+money(fs.due)+" · collected "+money(fs.got)+" · pending "+money(fs.pending);
+  if(DB.students.length===0){ el.innerHTML = emptyState("No students yet","Admit students first — challans are generated from each student's monthly fee.",'<button class="btn primary" onclick="studentForm()">+ Admit student</button>'); return; }
+  if(!all.length){ el.innerHTML = emptyState("No challans for "+monthName(feeMonth),"Generate this month's challans for all students in one tap, or add a single challan.",'<button class="btn primary" onclick="askGenerateChallans()">Generate challans</button> <button class="btn" onclick="feeForm()">+ Single challan</button>'); return; }
+  var list = all.filter(function(f){ return feeFilter==="all" || feeStatus(f)===feeFilter; })
+    .sort(function(a,b){ var sa=studentById(a.studentId), sb=studentById(b.studentId); var ca=CLASSES.indexOf(sa.cls), cb=CLASSES.indexOf(sb.cls); if(ca!==cb) return ca-cb; return sa.name.localeCompare(sb.name); });
+  if(!list.length){ el.innerHTML = emptyState("Nothing in this filter","No challans match the selected status for "+monthName(feeMonth)+"."); return; }
+  function statusPill(f){ var st=feeStatus(f); return st==="paid"? '<span class="pill paid">Paid</span>' : st==="part"? '<span class="pill part">Partial · '+money((Number(f.amount)||0)-(Number(f.paid)||0))+' left</span>' : '<span class="pill due">Unpaid</span>'; }
+  function remindBtn(f){
+    if(feeStatus(f)==="paid") return "";
+    var s = studentById(f.studentId); var bal = (Number(f.amount)||0)-(Number(f.paid)||0);
+    var msg = "Assalam-o-Alaikum, this is "+DB.settings.name+". Fee reminder: "+money(bal)+" is pending for "+s.name+" ("+classLabel(s.cls)+") for "+monthName(f.month)+". Due date: "+fmtDate(f.dueDate)+". Please pay at the school office. JazakAllah.";
+    var link = waLink(s.phone, msg);
+    return link? '<a class="btn small wa" target="_blank" rel="noopener" href="'+link+'">Remind</a>' : '';
+  }
+  var rows = list.map(function(f){ var s=studentById(f.studentId);
+    return '<tr><td><b>'+esc(s.name)+'</b><div class="meta">'+esc(classLabel(s.cls))+' · Roll '+esc(s.roll||"—")+'</div></td>'
+      + '<td>'+money(f.amount)+'<div class="meta">Paid '+money(f.paid)+(f.paidDate?' on '+fmtDate(f.paidDate):"")+'</div></td>'
+      + '<td>'+statusPill(f)+'<div class="meta">Due '+fmtDate(f.dueDate)+'</div></td>'
+      + '<td><div class="rowactions"><button class="btn small primary" onclick="payForm(\''+f.id+'\')">Record payment</button>'
+      + '<button class="btn small" onclick="printVoucher(\''+f.id+'\')">Voucher</button>'+remindBtn(f)
+      + '<button class="btn small danger" onclick="askDeleteFee(\''+f.id+'\')">Delete</button></div></td></tr>'; }).join("");
+  var cards = list.map(function(f){ var s=studentById(f.studentId);
+    return '<div class="card"><div style="display:flex;justify-content:space-between;gap:8px"><b>'+esc(s.name)+'</b>'+statusPill(f)+'</div>'
+      + '<div class="meta">'+esc(classLabel(s.cls))+' · Roll '+esc(s.roll||"—")+' · Due '+fmtDate(f.dueDate)+'</div>'
+      + '<div class="mut" style="margin:5px 0 9px">Challan '+money(f.amount)+' · Paid '+money(f.paid)+'</div>'
+      + '<div class="rowactions"><button class="btn small primary" onclick="payForm(\''+f.id+'\')">Record payment</button><button class="btn small" onclick="printVoucher(\''+f.id+'\')">Voucher</button>'+remindBtn(f)+'<button class="btn small danger" onclick="askDeleteFee(\''+f.id+'\')">Delete</button></div></div>'; }).join("");
+  el.innerHTML = '<div class="tablewrap"><table><thead><tr><th>Student</th><th>Challan</th><th>Status</th><th>Actions</th></tr></thead><tbody>'+rows+'</tbody></table></div><div class="listcards">'+cards+'</div>';
+}
+function defaultDueDate(ym){ var p=ym.split("-"); return ym+"-10"; }
+function askGenerateChallans(){
+  var existing = {}; DB.fees.forEach(function(f){ if(f.month===feeMonth) existing[f.studentId]=true; });
+  var missing = DB.students.filter(function(s){ return !existing[s.id]; });
+  if(DB.students.length===0){ toast("Admit students first."); return; }
+  if(!missing.length){ toast("Challans for "+monthName(feeMonth)+" already exist for every student."); return; }
+  openSheet('<h3>Generate challans — '+esc(monthName(feeMonth))+'</h3><div class="sub">This creates a challan for <b>'+missing.length+' student(s)</b> using each student\'s monthly fee. Students who already have a challan this month are skipped.</div>'
+    + '<div class="formgrid">'+fieldHtml("Due date", inp("g_due", defaultDueDate(feeMonth), "date"), true)+'</div>'
+    + '<div class="foot"><button class="btn" onclick="closeSheet()">Cancel</button><button class="btn primary" onclick="generateChallans()">Generate '+missing.length+' challans</button></div>');
+}
+function generateChallans(){
+  var due = val("g_due") || defaultDueDate(feeMonth);
+  var existing = {}; DB.fees.forEach(function(f){ if(f.month===feeMonth) existing[f.studentId]=true; });
+  var n=0;
+  DB.students.forEach(function(s){ if(!existing[s.id]){ DB.fees.push({id:uid(), studentId:s.id, month:feeMonth, amount:Number(s.fee)||0, paid:0, paidDate:"", dueDate:due}); n++; } });
+  saveDB(); closeSheet(); toast(n+" challan(s) generated for "+monthName(feeMonth)+"."); render();
+}
+function feeForm(){
+  if(DB.students.length===0){ toast("Admit a student first."); return; }
+  var opts = DB.students.map(function(s){ return {v:s.id, t:s.name+" — "+classLabel(s.cls)}; });
+  openSheet('<h3>New fee challan</h3><div class="sub">For one student and one month.</div><div class="formgrid">'
+    + fieldHtml("Student", sel("ff_student", DB.students[0].id, opts), true)
+    + fieldHtml("Month", inp("ff_month", feeMonth, "month"))
+    + fieldHtml("Amount (Rs)", inp("ff_amount", DB.students[0].fee, "number", 'min="0" inputmode="numeric"'))
+    + fieldHtml("Due date", inp("ff_due", defaultDueDate(feeMonth), "date"))
+    + '</div><div class="foot"><button class="btn" onclick="closeSheet()">Cancel</button><button class="btn primary" onclick="saveFee()">Create challan</button></div>');
+}
+function saveFee(){
+  var sid = val("ff_student"), m = val("ff_month"); if(!m){ toast("Pick a month."); return; }
+  if(DB.fees.some(function(f){ return f.studentId===sid && f.month===m; })){ toast("This student already has a challan for "+monthName(m)+"."); return; }
+  DB.fees.push({id:uid(), studentId:sid, month:m, amount:numVal("ff_amount"), paid:0, paidDate:"", dueDate:val("ff_due")||defaultDueDate(m)});
+  feeMonth = m; saveDB(); closeSheet(); toast("Challan created."); render();
+}
+function payForm(fid){
+  var f = DB.fees.filter(function(x){ return x.id===fid; })[0]; if(!f) return;
+  var s = studentById(f.studentId); var bal = (Number(f.amount)||0)-(Number(f.paid)||0);
+  openSheet('<h3>Record payment</h3><div class="sub">'+esc(s.name)+' · '+esc(monthName(f.month))+' · Balance '+money(bal)+' of '+money(f.amount)+'.</div><div class="formgrid">'
+    + fieldHtml("Amount received (Rs)", inp("pf_amount", bal, "number", 'min="0" inputmode="numeric"'))
+    + fieldHtml("Payment date", inp("pf_date", todayStr(), "date"))
+    + '</div><div class="foot"><button class="btn" onclick="closeSheet()">Cancel</button><button class="btn" onclick="printVoucher(\''+fid+'\')">Print voucher</button><button class="btn primary" onclick="savePayment(\''+fid+'\')">Save payment</button></div>');
+}
+function savePayment(fid){
+  var f = DB.fees.filter(function(x){ return x.id===fid; })[0]; if(!f) return;
+  var amt = numVal("pf_amount"); if(amt<=0){ toast("Enter the amount received."); return; }
+  f.paid = Math.min((Number(f.paid)||0)+amt, Number(f.amount)||0);
+  f.paidDate = val("pf_date") || todayStr();
+  saveDB(); closeSheet(); toast("Payment recorded. "+(feeStatus(f)==="paid"?"Fee fully paid.":"Balance "+money((Number(f.amount)||0)-f.paid)+" remains.")); render();
+}
+function askDeleteFee(fid){
+  confirmSheet("Delete this challan?","The fee record will be removed. The student stays enrolled.","Delete challan","doDeleteFee('"+fid+"')");
+}
+function doDeleteFee(fid){ DB.fees = DB.fees.filter(function(f){ return f.id!==fid; }); saveDB(); closeSheet(); toast("Challan deleted."); render(); }
+function printVoucher(fid){
+  var f = DB.fees.filter(function(x){ return x.id===fid; })[0]; if(!f) return;
+  var s = studentById(f.studentId); if(!s) return;
+  var st = DB.settings;
+  var bal = (Number(f.amount)||0)-(Number(f.paid)||0);
+  function copy(label){
+    return '<div class="voucher"><div class="c"><div style="font-size:12px;letter-spacing:2px">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div><h2>'+esc(st.name)+'</h2>'
+      + '<div>'+esc(st.location)+' · Session '+esc(st.session)+'</div><div style="font-weight:bold;margin-top:4px">FEE VOUCHER — '+label+'</div></div>'
+      + '<table style="margin-top:12px"><tr><td>Student</td><td><b>'+esc(s.name)+'</b></td><td>Class</td><td>'+esc(classLabel(s.cls))+(s.section?' ('+esc(s.section)+')':"")+'</td></tr>'
+      + '<tr><td>Roll No</td><td>'+esc(s.roll||"—")+'</td><td>Month</td><td>'+esc(monthName(f.month))+'</td></tr>'
+      + '<tr><td>Guardian</td><td>'+esc(s.guardian||"—")+'</td><td>Due date</td><td>'+fmtDate(f.dueDate)+'</td></tr>'
+      + '<tr><td>Monthly fee</td><td>'+money(f.amount)+'</td><td>Paid</td><td>'+money(f.paid)+(f.paidDate?' ('+fmtDate(f.paidDate)+')':"")+'</td></tr>'
+      + '<tr><td><b>Balance due</b></td><td colspan="3"><b>'+money(bal)+'</b></td></tr></table>'
+      + '<div style="display:flex;justify-content:space-between;margin-top:26px"><span>Received by: ____________</span><span>Principal: '+esc(st.principal||"____________")+'</span></div>'
+      + (st.phone? '<div style="margin-top:10px;font-size:12px">School phone: '+esc(st.phone)+'</div>':"")+'</div>';
+  }
+  document.getElementById("printArea").innerHTML = copy("School Copy") + copy("Student Copy");
+  closeSheet(); setTimeout(function(){ window.print(); }, 60);
+}
+
+/* ---------------- EXAMS ---------------- */
+var activeExam = "";
+function viewExams(){
+  var h = pageHead("Exams & Results","Create an exam, enter marks, see class results and print DMCs (Detailed Marks Certificates).",
+    '<button class="btn primary" onclick="examForm()">+ New exam</button>');
+  if(!DB.exams.length){
+    h += emptyState("No exams yet","Create your first exam — for example “Monthly Test — November” for Class 5 — with its subjects and total marks.",'<button class="btn primary" onclick="examForm()">+ New exam</button>');
+    return h;
+  }
+  if(!activeExam || !DB.exams.some(function(e){ return e.id===activeExam; })) activeExam = DB.exams[DB.exams.length-1].id;
+  var ex = DB.exams.filter(function(e){ return e.id===activeExam; })[0];
+  h += '<div class="toolbar"><div class="field"><label>Exam</label><select onchange="activeExam=this.value;render()" style="border:1px solid var(--line2);background:var(--surface);border-radius:9px;padding:9px;min-height:44px">'
+    + DB.exams.map(function(e){ return '<option value="'+e.id+'"'+(e.id===activeExam?" selected":"")+'>'+esc(e.name)+' — '+esc(classLabel(e.cls))+'</option>'; }).join("")+'</select></div>'
+    + '<span class="spacer"></span>'
+    + '<button class="btn small" onclick="examForm(\''+ex.id+'\')">Edit exam</button>'
+    + '<button class="btn small danger" onclick="askDeleteExam(\''+ex.id+'\')">Delete exam</button></div>';
+  h += '<div id="examBody"></div>';
+  setTimeout(renderExamBody, 0);
+  return h;
+}
+function examStudents(ex){ return DB.students.filter(function(s){ return s.cls===ex.cls; }).sort(function(a,b){ return String(a.roll).localeCompare(String(b.roll), undefined, {numeric:true}); }); }
+function renderExamBody(){
+  var el = document.getElementById("examBody"); if(!el) return;
+  var ex = DB.exams.filter(function(e){ return e.id===activeExam; })[0]; if(!ex) return;
+  var students = examStudents(ex);
+  var totalAll = ex.subjects.reduce(function(s,x){ return s+(Number(x.total)||0); },0);
+  if(!students.length){ el.innerHTML = emptyState("No students in "+classLabel(ex.cls),"Admit students to this class first, then enter their marks here."); return; }
+  var marks = DB.marks[ex.id] || {};
+  function resultFor(s){
+    var m = marks[s.id]; if(!m) return null;
+    var got = ex.subjects.reduce(function(sum,x){ return sum + (Number(m[x.name])||0); }, 0);
+    var pct = totalAll>0? Math.round(got/totalAll*1000)/10 : 0;
+    var grade = pct>=90?"A+":pct>=80?"A":pct>=70?"B":pct>=60?"C":pct>=50?"D":pct>=40?"E":"F";
+    return {got:got, pct:pct, grade:grade, pass:pct>=40};
+  }
+  var results = students.map(function(s){ return {s:s, r:resultFor(s)}; }).filter(function(x){ return x.r; });
+  results.sort(function(a,b){ return b.r.got-a.r.got; });
+  results.forEach(function(x,i){ x.pos = i+1; });
+  var posMap = {}; results.forEach(function(x){ posMap[x.s.id]=x.pos; });
+  var head = '<tr><th>Student</th>' + ex.subjects.map(function(x){ return '<th>'+esc(x.name)+'<div class="meta">/ '+esc(x.total)+'</div></th>'; }).join("") + '<th>Total</th><th>%</th><th>Grade</th><th>Pos</th><th></th></tr>';
+  var rows = students.map(function(s){
+    var m = marks[s.id] || {}; var r = resultFor(s);
+    var cells = ex.subjects.map(function(x){ return '<td><input type="number" min="0" max="'+esc(x.total)+'" inputmode="numeric" value="'+(m[x.name]==null?"":esc(m[x.name]))+'" onchange="setMark(\''+ex.id+'\',\''+s.id+'\',\''+esc(x.name)+'\',this.value)" style="width:74px;border:1px solid var(--line2);background:var(--surface);border-radius:8px;padding:8px;min-height:40px" /></td>'; }).join("");
+    return '<tr><td><b>'+esc(s.name)+'</b><div class="meta">Roll '+esc(s.roll||"—")+'</div></td>'+cells
+      + '<td><b>'+(r? r.got+" / "+totalAll : "—")+'</b></td><td>'+(r? r.pct+"%" : "—")+'</td>'
+      + '<td>'+(r? '<span class="pill '+(r.pass?"paid":"due")+'">'+r.grade+'</span>' : "—")+'</td>'
+      + '<td>'+(r? posMap[s.id] : "—")+'</td>'
+      + '<td>'+(r? '<button class="btn small" onclick="printDMC(\''+ex.id+'\',\''+s.id+'\')">Print DMC</button> <button class="btn small wa" onclick="sendResultWA(\''+ex.id+'\',\''+s.id+'\')">WhatsApp result</button>' : '<span class="mut">Enter marks</span>')+'</td></tr>';
+  }).join("");
+  var cards = students.map(function(s){
+    var m = marks[s.id] || {}; var r = resultFor(s);
+    var inputs = ex.subjects.map(function(x){ return '<div class="field"><label>'+esc(x.name)+' / '+esc(x.total)+'</label><input type="number" min="0" max="'+esc(x.total)+'" inputmode="numeric" value="'+(m[x.name]==null?"":esc(m[x.name]))+'" onchange="setMark(\''+ex.id+'\',\''+s.id+'\',\''+esc(x.name)+'\',this.value)" /></div>'; }).join("");
+    return '<div class="card"><b>'+esc(s.name)+'</b> <span class="meta">Roll '+esc(s.roll||"—")+'</span>'
+      + (r? '<div style="margin:6px 0"><span class="pill '+(r.pass?"paid":"due")+'">Grade '+r.grade+'</span> <b>'+r.got+' / '+totalAll+' ('+r.pct+'%)</b> · Position '+posMap[s.id]+'</div>' : '')
+      + '<div class="formgrid" style="margin-top:8px">'+inputs+'</div>'
+      + (r? '<div class="rowactions" style="margin-top:10px"><button class="btn small" onclick="printDMC(\''+ex.id+'\',\''+s.id+'\')">Print DMC</button><button class="btn small wa" onclick="sendResultWA(\''+ex.id+'\',\''+s.id+'\')">WhatsApp result</button></div>' : '')
+      + '</div>';
+  }).join("");
+  el.innerHTML = '<div class="tablewrap"><table><thead>'+head+'</thead><tbody>'+rows+'</tbody></table></div><div class="listcards">'+cards+'</div>'
+    + '<p class="mut" style="margin-top:12px">Type marks and tap outside the box — they save automatically. Positions and grades update instantly.</p>';
+}
+function setMark(exId, sid, subject, value){
+  if(!DB.marks[exId]) DB.marks[exId] = {};
+  if(!DB.marks[exId][sid]) DB.marks[exId][sid] = {};
+  var v = value===""? null : Number(value);
+  if(v===null || isNaN(v)) delete DB.marks[exId][sid][subject]; else DB.marks[exId][sid][subject] = v;
+  saveDB();
+  clearTimeout(setMark._t); setMark._t = setTimeout(renderExamBody, 450);
+}
+function examForm(id){
+  var ex = id? DB.exams.filter(function(e){ return e.id===id; })[0] : {name:"", cls:"5", date:todayStr(), subjects:[{name:"English",total:100},{name:"Urdu",total:100},{name:"Mathematics",total:100}]};
+  if(id && !ex) return;
+  var subjText = ex.subjects.map(function(x){ return x.name+":"+x.total; }).join("\n");
+  openSheet('<h3>'+(id?"Edit exam":"New exam")+'</h3><div class="sub">One exam covers one class. Subjects: one per line as <b>Subject:TotalMarks</b>.</div><div class="formgrid">'
+    + fieldHtml("Exam name", inp("xf_name", ex.name, "text", 'placeholder="e.g. Final Term Exam"'), true)
+    + fieldHtml("Class", sel("xf_cls", ex.cls, classOptions()))
+    + fieldHtml("Exam date", inp("xf_date", ex.date, "date"))
+    + fieldHtml("Subjects (one per line)", '<textarea id="xf_subjects">'+esc(subjText)+'</textarea>', true)
+    + '</div><div class="foot"><button class="btn" onclick="closeSheet()">Cancel</button><button class="btn primary" onclick="saveExam('+(id?"'"+id+"'":"null")+')">'+(id?"Save changes":"Create exam")+'</button></div>');
+}
+function saveExam(id){
+  var name = val("xf_name"); if(!name){ toast("Enter an exam name."); return; }
+  var lines = document.getElementById("xf_subjects").value.split("\n").map(function(x){ return x.trim(); }).filter(Boolean);
+  var subjects = [];
+  for(var i=0;i<lines.length;i++){ var parts = lines[i].split(":"); var sn = (parts[0]||"").trim(); var tot = Number((parts[1]||"").trim())||100; if(sn) subjects.push({name:sn, total:tot}); }
+  if(!subjects.length){ toast("Add at least one subject, e.g. English:100"); return; }
+  if(id){ var ex = DB.exams.filter(function(e){ return e.id===id; })[0]; ex.name=name; ex.cls=val("xf_cls"); ex.date=val("xf_date"); ex.subjects=subjects; }
+  else { var nid = uid(); DB.exams.push({id:nid, name:name, cls:val("xf_cls"), date:val("xf_date"), subjects:subjects}); activeExam = nid; }
+  saveDB(); closeSheet(); toast("Exam saved."); render();
+}
+function askDeleteExam(id){
+  var ex = DB.exams.filter(function(e){ return e.id===id; })[0]; if(!ex) return;
+  confirmSheet("Delete “"+ex.name+"”?","The exam and all marks entered for it will be removed.","Delete exam","doDeleteExam('"+id+"')");
+}
+function doDeleteExam(id){ DB.exams = DB.exams.filter(function(e){ return e.id!==id; }); delete DB.marks[id]; saveDB(); closeSheet(); toast("Exam deleted."); render(); }
+function sendResultWA(exId, sid){
+  var ex = DB.exams.filter(function(e){ return e.id===exId; })[0]; var s = studentById(sid); if(!ex||!s) return;
+  var m = (DB.marks[exId]||{})[sid] || {};
+  var totalAll = ex.subjects.reduce(function(sum,x){ return sum+(Number(x.total)||0); },0);
+  var got = ex.subjects.reduce(function(sum,x){ return sum+(Number(m[x.name])||0); },0);
+  var pct = totalAll>0? Math.round(got/totalAll*1000)/10 : 0;
+  var lines = ex.subjects.map(function(x){ return "• "+x.name+": "+(m[x.name]==null?"—":m[x.name])+"/"+x.total; }).join("\n");
+  var msg = "Assalam-o-Alaikum, result of "+s.name+" ("+classLabel(s.cls)+") — "+ex.name+", "+DB.settings.name+":\n"+lines+"\nTotal: "+got+"/"+totalAll+" ("+pct+"%)";
+  var link = waLink(s.phone, msg);
+  if(link) window.open(link, "_blank"); else toast("No guardian WhatsApp number saved for this student.");
+}
+function printDMC(exId, sid){
+  var ex = DB.exams.filter(function(e){ return e.id===exId; })[0]; var s = studentById(sid); if(!ex||!s) return;
+  var st = DB.settings; var m = (DB.marks[exId]||{})[sid] || {};
+  var totalAll = ex.subjects.reduce(function(sum,x){ return sum+(Number(x.total)||0); },0);
+  var got = ex.subjects.reduce(function(sum,x){ return sum+(Number(m[x.name])||0); },0);
+  var pct = totalAll>0? Math.round(got/totalAll*1000)/10 : 0;
+  var grade = pct>=90?"A+":pct>=80?"A":pct>=70?"B":pct>=60?"C":pct>=50?"D":pct>=40?"E":"F";
+  var students = examStudents(ex); var marks = DB.marks[exId]||{};
+  var ranked = students.map(function(x){ var mm = marks[x.id]; if(!mm) return null; return {id:x.id, got: ex.subjects.reduce(function(sum,y){ return sum+(Number(mm[y.name])||0); },0)}; }).filter(Boolean).sort(function(a,b){ return b.got-a.got; });
+  var pos = "—"; ranked.forEach(function(r,i){ if(r.id===sid) pos = i+1; });
+  var rows = ex.subjects.map(function(x, i){ return '<tr><td>'+(i+1)+'</td><td>'+esc(x.name)+'</td><td>'+esc(x.total)+'</td><td>'+(m[x.name]==null?"—":esc(m[x.name]))+'</td></tr>'; }).join("");
+  document.getElementById("printArea").innerHTML =
+    '<div class="dmc"><div style="text-align:center"><div style="font-size:12px;letter-spacing:2px">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div><h2>'+esc(st.name)+'</h2>'
+    + '<div>'+esc(st.location)+' · Session '+esc(st.session)+'</div><div style="font-weight:bold;margin-top:5px">DETAILED MARKS CERTIFICATE (DMC)</div><div>'+esc(ex.name)+'</div></div>'
+    + '<table style="margin-top:14px"><tr><td>Student</td><td><b>'+esc(s.name)+'</b></td><td>Father</td><td>'+esc(s.father||"—")+'</td></tr>'
+    + '<tr><td>Class</td><td>'+esc(classLabel(s.cls))+(s.section?' ('+esc(s.section)+')':"")+'</td><td>Roll No</td><td>'+esc(s.roll||"—")+'</td></tr></table>'
+    + '<table style="margin-top:10px"><tr><th>S.No</th><th>Subject</th><th>Total Marks</th><th>Obtained</th></tr>'+rows
+    + '<tr><td colspan="2"><b>Grand Total</b></td><td><b>'+totalAll+'</b></td><td><b>'+got+'</b></td></tr></table>'
+    + '<table style="margin-top:10px"><tr><td>Percentage</td><td><b>'+pct+'%</b></td><td>Grade</td><td><b>'+grade+'</b></td><td>Position</td><td><b>'+pos+'</b></td><td>Result</td><td><b>'+(pct>=40?"PASS":"FAIL")+'</b></td></tr></table>'
+    + '<div style="display:flex;justify-content:space-between;margin-top:34px"><span>Class Teacher: ____________</span><span>Principal: '+esc(st.principal||"____________")+'</span></div></div>';
+  setTimeout(function(){ window.print(); }, 60);
+}
+
+/* ---------------- TEACHERS ---------------- */
+function viewTeachers(){
+  var h = pageHead("Teachers","Staff list with subjects, class incharge and phone numbers.",'<button class="btn primary" onclick="teacherForm()">+ Add teacher</button>');
+  if(!DB.teachers.length){ h += emptyState("No teachers yet","Add your teaching staff here.",'<button class="btn primary" onclick="teacherForm()">+ Add teacher</button>'); return h; }
+  var rows = DB.teachers.map(function(t){ var wa = waLink(t.phone, "Assalam-o-Alaikum, this is "+DB.settings.name+".");
+    return '<tr><td><b>'+esc(t.name)+'</b></td><td>'+esc(t.subject||"—")+'</td><td>'+(t.incharge? esc(classLabel(t.incharge)) : "—")+'</td><td>'+esc(t.phone||"—")+'</td>'
+    + '<td><div class="rowactions">'+(wa? '<a class="btn small wa" target="_blank" rel="noopener" href="'+wa+'">WhatsApp</a>':'')+'<button class="btn small" onclick="teacherForm(\''+t.id+'\')">Edit</button><button class="btn small danger" onclick="askDeleteTeacher(\''+t.id+'\')">Delete</button></div></td></tr>'; }).join("");
+  var cards = DB.teachers.map(function(t){ var wa = waLink(t.phone, "Assalam-o-Alaikum, this is "+DB.settings.name+".");
+    return '<div class="card"><b>'+esc(t.name)+'</b><div class="meta">'+esc(t.subject||"")+(t.incharge?' · Incharge '+esc(classLabel(t.incharge)):"")+' · '+esc(t.phone||"")+'</div><div class="rowactions" style="margin-top:9px">'+(wa? '<a class="btn small wa" target="_blank" rel="noopener" href="'+wa+'">WhatsApp</a>':'')+'<button class="btn small" onclick="teacherForm(\''+t.id+'\')">Edit</button><button class="btn small danger" onclick="askDeleteTeacher(\''+t.id+'\')">Delete</button></div></div>'; }).join("");
+  h += '<div class="tablewrap"><table><thead><tr><th>Name</th><th>Subject</th><th>Class incharge</th><th>Phone</th><th>Actions</th></tr></thead><tbody>'+rows+'</tbody></table></div><div class="listcards">'+cards+'</div>';
+  return h;
+}
+function teacherForm(id){
+  var t = id? DB.teachers.filter(function(x){ return x.id===id; })[0] : {name:"", subject:"", incharge:"", phone:""};
+  if(id && !t) return;
+  var opts = [{v:"", t:"None"}].concat(classOptions());
+  openSheet('<h3>'+(id?"Edit teacher":"Add teacher")+'</h3><div class="sub">Staff details stay in this browser only.</div><div class="formgrid">'
+    + fieldHtml("Full name", inp("tf_name", t.name), true)
+    + fieldHtml("Main subject", inp("tf_subject", t.subject))
+    + fieldHtml("Class incharge of", sel("tf_incharge", t.incharge, opts))
+    + fieldHtml("Phone / WhatsApp", inp("tf_phone", t.phone, "tel"))
+    + '</div><div class="foot"><button class="btn" onclick="closeSheet()">Cancel</button><button class="btn primary" onclick="saveTeacher('+(id?"'"+id+"'":"null")+')">'+(id?"Save changes":"Add teacher")+'</button></div>');
+}
+function saveTeacher(id){
+  var name = val("tf_name"); if(!name){ toast("Enter the teacher's name."); return; }
+  var data = {name:name, subject:val("tf_subject"), incharge:val("tf_incharge"), phone:val("tf_phone")};
+  if(id){ var t = DB.teachers.filter(function(x){ return x.id===id; })[0]; for(var k in data) t[k]=data[k]; }
+  else { data.id = uid(); DB.teachers.push(data); }
+  saveDB(); closeSheet(); toast("Teacher saved."); render();
+}
+function askDeleteTeacher(id){ confirmSheet("Delete this teacher?","The teacher will be removed from the staff list.","Delete teacher","doDeleteTeacher('"+id+"')"); }
+function doDeleteTeacher(id){ DB.teachers = DB.teachers.filter(function(t){ return t.id!==id; }); saveDB(); closeSheet(); toast("Teacher deleted."); render(); }
+</script>
+<script>
+"use strict";
+/* ---------------- DAILY DIARY ---------------- */
+var diaryDate = todayStr();
+function viewDiary(){
+  var h = pageHead("Daily Diary","Homework and classwork diary that parents can receive on WhatsApp.",'<button class="btn primary" onclick="diaryForm()">+ Add diary entry</button>');
+  h += '<div class="toolbar"><div class="field"><label>Date</label><input type="date" value="'+diaryDate+'" onchange="diaryDate=this.value;render()" style="border:1px solid var(--line2);background:var(--surface);border-radius:9px;padding:9px;min-height:44px" /></div></div>';
+  var items = DB.diary.filter(function(d){ return d.date===diaryDate; });
+  if(!items.length){ h += emptyState("No diary for "+fmtDate(diaryDate),"Add today's homework and classwork for each class.",'<button class="btn primary" onclick="diaryForm()">+ Add diary entry</button>'); return h; }
+  h += '<div class="card">' + items.map(function(d){
+    return '<div class="diary-item"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><h3>'+esc(classLabel(d.cls))+' — '+esc(d.subject)+'</h3><span class="meta">'+esc(d.teacher||"")+'</span></div>'
+      + '<div style="white-space:pre-wrap;margin-top:3px">'+esc(d.homework)+'</div>'
+      + '<div class="rowactions" style="margin-top:8px"><button class="btn small wa" onclick="sendDiaryWA(\''+d.id+'\')">WhatsApp to class guardians</button><button class="btn small" onclick="diaryForm(\''+d.id+'\')">Edit</button><button class="btn small danger" onclick="askDeleteDiary(\''+d.id+'\')">Delete</button></div></div>';
+  }).join("") + '</div>';
+  return h;
+}
+function diaryForm(id){
+  var d = id? DB.diary.filter(function(x){ return x.id===id; })[0] : {date:diaryDate, cls:"5", subject:"", homework:"", teacher:""};
+  if(id && !d) return;
+  openSheet('<h3>'+(id?"Edit diary entry":"Add diary entry")+'</h3><div class="sub">Homework given on the selected date.</div><div class="formgrid">'
+    + fieldHtml("Date", inp("df_date", d.date, "date"))
+    + fieldHtml("Class", sel("df_cls", d.cls, classOptions()))
+    + fieldHtml("Subject", inp("df_subject", d.subject, "text", 'placeholder="e.g. Mathematics"'))
+    + fieldHtml("Teacher", inp("df_teacher", d.teacher))
+    + fieldHtml("Homework / classwork", '<textarea id="df_homework" placeholder="e.g. Learn tables 12–15. Do Ex 4.2 Q1–Q5 in notebook.">'+esc(d.homework)+'</textarea>', true)
+    + '</div><div class="foot"><button class="btn" onclick="closeSheet()">Cancel</button><button class="btn primary" onclick="saveDiary('+(id?"'"+id+"'":"null")+')">'+(id?"Save changes":"Add entry")+'</button></div>');
+}
+function saveDiary(id){
+  var hw = document.getElementById("df_homework").value.trim(); if(!hw){ toast("Write the homework first."); return; }
+  var data = {date:val("df_date")||todayStr(), cls:val("df_cls"), subject:val("df_subject")||"General", homework:hw, teacher:val("df_teacher")};
+  if(id){ var d = DB.diary.filter(function(x){ return x.id===id; })[0]; for(var k in data) d[k]=data[k]; }
+  else { data.id = uid(); DB.diary.push(data); }
+  diaryDate = data.date; saveDB(); closeSheet(); toast("Diary saved."); render();
+}
+function askDeleteDiary(id){ confirmSheet("Delete this diary entry?","The homework entry will be removed.","Delete entry","doDeleteDiary('"+id+"')"); }
+function doDeleteDiary(id){ DB.diary = DB.diary.filter(function(d){ return d.id!==id; }); saveDB(); closeSheet(); toast("Diary entry deleted."); render(); }
+function sendDiaryWA(id){
+  var d = DB.diary.filter(function(x){ return x.id===id; })[0]; if(!d) return;
+  var msg = "Daily Diary — "+DB.settings.name+"\n"+classLabel(d.cls)+" · "+d.subject+" · "+fmtDate(d.date)+"\nHomework: "+d.homework;
+  openClassPicker(d.cls, msg, "diary");
+}
+
+/* ---------------- NOTICES ---------------- */
+function viewNotices(){
+  var h = pageHead("Notices & Announcements","School notices, holidays and announcements for parents.",'<button class="btn primary" onclick="noticeForm()">+ New notice</button>');
+  if(!DB.notices.length){ h += emptyState("No notices yet","Post your first notice — it can be sent to any class on WhatsApp from here.",'<button class="btn primary" onclick="noticeForm()">+ New notice</button>'); return h; }
+  var items = DB.notices.slice().sort(function(a,b){ return a.date<b.date?1:-1; });
+  h += '<div class="card">' + items.map(function(n){
+    return '<div class="notice-item"><div class="meta">'+fmtDate(n.date)+'</div><h3>'+esc(n.title)+'</h3><div style="white-space:pre-wrap">'+esc(n.body)+'</div>'
+      + '<div class="rowactions" style="margin-top:8px"><button class="btn small wa" onclick="sendNoticeWA(\''+n.id+'\')">WhatsApp to a class</button><button class="btn small" onclick="noticeForm(\''+n.id+'\')">Edit</button><button class="btn small danger" onclick="askDeleteNotice(\''+n.id+'\')">Delete</button></div></div>';
+  }).join("") + '</div>';
+  return h;
+}
+function noticeForm(id){
+  var n = id? DB.notices.filter(function(x){ return x.id===id; })[0] : {date:todayStr(), title:"", body:""};
+  if(id && !n) return;
+  openSheet('<h3>'+(id?"Edit notice":"New notice")+'</h3><div class="sub">Shown on the Home dashboard and sendable on WhatsApp.</div><div class="formgrid">'
+    + fieldHtml("Date", inp("nf_date", n.date, "date"))
+    + fieldHtml("Title", inp("nf_title", n.title, "text", 'placeholder="e.g. School closed on Friday"'), true)
+    + fieldHtml("Notice text", '<textarea id="nf_body" placeholder="Write the full announcement…">'+esc(n.body)+'</textarea>', true)
+    + '</div><div class="foot"><button class="btn" onclick="closeSheet()">Cancel</button><button class="btn primary" onclick="saveNotice('+(id?"'"+id+"'":"null")+')">'+(id?"Save changes":"Post notice")+'</button></div>');
+}
+function saveNotice(id){
+  var title = val("nf_title"); if(!title){ toast("Give the notice a title."); return; }
+  var data = {date:val("nf_date")||todayStr(), title:title, body:document.getElementById("nf_body").value.trim()};
+  if(id){ var n = DB.notices.filter(function(x){ return x.id===id; })[0]; for(var k in data) n[k]=data[k]; }
+  else { data.id = uid(); DB.notices.push(data); }
+  saveDB(); closeSheet(); toast("Notice saved."); render();
+}
+function askDeleteNotice(id){ confirmSheet("Delete this notice?","It will be removed from the dashboard and notices list.","Delete notice","doDeleteNotice('"+id+"')"); }
+function doDeleteNotice(id){ DB.notices = DB.notices.filter(function(n){ return n.id!==id; }); saveDB(); closeSheet(); toast("Notice deleted."); render(); }
+function sendNoticeWA(id){
+  var n = DB.notices.filter(function(x){ return x.id===id; })[0]; if(!n) return;
+  var msg = "📢 NOTICE — "+DB.settings.name+"\n"+n.title+"\n"+n.body+"\n("+fmtDate(n.date)+")";
+  openClassPicker("", msg, "notice");
+}
+
+/* pick a class, then a guardian, to send a prepared message */
+function openClassPicker(cls, msg, kind){
+  var classesWithStudents = CLASSES.filter(function(c){ return DB.students.some(function(s){ return s.cls===c && waNum(s.phone); }); });
+  if(!classesWithStudents.length){ toast("No guardians with WhatsApp numbers yet. Add guardian numbers in Students."); return; }
+  window._waMsg = msg;
+  var list = classesWithStudents.map(function(c){
+    var count = DB.students.filter(function(s){ return s.cls===c && waNum(s.phone); }).length;
+    return '<button class="btn" style="width:100%;justify-content:space-between;margin-bottom:8px" onclick="openGuardianPicker(\''+c+'\')"><span>'+esc(classLabel(c))+'</span><span class="pill info">'+count+' guardians</span></button>';
+  }).join("");
+  openSheet('<h3>Send on WhatsApp</h3><div class="sub">Choose a class, then tap a guardian — WhatsApp opens with the message ready to send. Repeat for each guardian.</div>'+list+'<div class="foot"><button class="btn" onclick="closeSheet()">Close</button></div>');
+}
+function openGuardianPicker(cls){
+  var students = DB.students.filter(function(s){ return s.cls===cls && waNum(s.phone); });
+  var list = students.map(function(s){
+    return '<a class="btn wa" style="width:100%;justify-content:space-between;margin-bottom:8px" target="_blank" rel="noopener" href="'+waLink(s.phone, window._waMsg||"")+'"><span>'+esc(s.name)+' — '+esc(s.guardian||"Guardian")+'</span><span>'+esc(s.phone)+'</span></a>';
+  }).join("");
+  openSheet('<h3>'+esc(classLabel(cls))+' guardians</h3><div class="sub">Tap a guardian to open WhatsApp with the message ready.</div>'+list+'<div class="foot"><button class="btn" onclick="closeSheet()">Done</button></div>');
+}
+
+/* ---------------- EXPENSES ---------------- */
+function viewExpenses(){
+  var ym = monthStr();
+  var totalMonth = DB.expenses.filter(function(e){ return (e.date||"").slice(0,7)===ym; }).reduce(function(s,e){ return s+(Number(e.amount)||0); },0);
+  var h = pageHead("Expenses","School spending — salaries, bills, stationery and more.",'<button class="btn primary" onclick="expenseForm()">+ Add expense</button>');
+  h += '<div class="grid c3" style="margin-bottom:14px"><div class="card stat"><div class="label">Expenses · '+esc(monthName(ym))+'</div><div class="num">'+money(totalMonth)+'</div></div>'
+    + '<div class="card stat"><div class="label">Fees collected · this month</div><div class="num">'+money(feeStatsForMonth(ym).got)+'</div></div>'
+    + '<div class="card stat"><div class="label">Balance · this month</div><div class="num" style="color:'+(feeStatsForMonth(ym).got-totalMonth>=0?"var(--green2)":"var(--red)")+'">'+money(feeStatsForMonth(ym).got-totalMonth)+'</div></div></div>';
+  if(!DB.expenses.length){ h += emptyState("No expenses yet","Record the first expense to start tracking school spending.",'<button class="btn primary" onclick="expenseForm()">+ Add expense</button>'); return h; }
+  var items = DB.expenses.slice().sort(function(a,b){ return a.date<b.date?1:-1; });
+  var rows = items.map(function(e){ return '<tr><td>'+fmtDate(e.date)+'</td><td><b>'+esc(e.title)+'</b></td><td><span class="pill info">'+esc(e.category)+'</span></td><td><b>'+money(e.amount)+'</b></td><td><div class="rowactions"><button class="btn small" onclick="expenseForm(\''+e.id+'\')">Edit</button><button class="btn small danger" onclick="askDeleteExpense(\''+e.id+'\')">Delete</button></div></td></tr>'; }).join("");
+  var cards = items.map(function(e){ return '<div class="card"><div style="display:flex;justify-content:space-between;gap:8px"><b>'+esc(e.title)+'</b><b>'+money(e.amount)+'</b></div><div class="meta">'+fmtDate(e.date)+' · '+esc(e.category)+'</div><div class="rowactions" style="margin-top:9px"><button class="btn small" onclick="expenseForm(\''+e.id+'\')">Edit</button><button class="btn small danger" onclick="askDeleteExpense(\''+e.id+'\')">Delete</button></div></div>'; }).join("");
+  h += '<div class="tablewrap"><table><thead><tr><th>Date</th><th>Detail</th><th>Category</th><th>Amount</th><th>Actions</th></tr></thead><tbody>'+rows+'</tbody></table></div><div class="listcards">'+cards+'</div>';
+  return h;
+}
+function expenseForm(id){
+  var e = id? DB.expenses.filter(function(x){ return x.id===id; })[0] : {date:todayStr(), title:"", category:"Other", amount:""};
+  if(id && !e) return;
+  var cats = ["Salaries","Electricity / Utilities","Stationery","Rent","Maintenance","Transport","Events","Other"].map(function(c){ return {v:c, t:c}; });
+  openSheet('<h3>'+(id?"Edit expense":"Add expense")+'</h3><div class="sub">One expense entry.</div><div class="formgrid">'
+    + fieldHtml("Date", inp("ef_date", e.date, "date"))
+    + fieldHtml("Category", sel("ef_cat", e.category, cats))
+    + fieldHtml("Detail", inp("ef_title", e.title, "text", 'placeholder="e.g. Electricity bill — October"'), true)
+    + fieldHtml("Amount (Rs)", inp("ef_amount", e.amount, "number", 'min="0" inputmode="numeric"'))
+    + '</div><div class="foot"><button class="btn" onclick="closeSheet()">Cancel</button><button class="btn primary" onclick="saveExpense('+(id?"'"+id+"'":"null")+')">'+(id?"Save changes":"Add expense")+'</button></div>');
+}
+function saveExpense(id){
+  var title = val("ef_title"); var amt = numVal("ef_amount");
+  if(!title){ toast("Enter what the expense was for."); return; }
+  if(amt<=0){ toast("Enter the amount."); return; }
+  var data = {date:val("ef_date")||todayStr(), title:title, category:val("ef_cat"), amount:amt};
+  if(id){ var e = DB.expenses.filter(function(x){ return x.id===id; })[0]; for(var k in data) e[k]=data[k]; }
+  else { data.id = uid(); DB.expenses.push(data); }
+  saveDB(); closeSheet(); toast("Expense saved."); render();
+}
+function askDeleteExpense(id){ confirmSheet("Delete this expense?","The entry will be removed from expense totals.","Delete expense","doDeleteExpense('"+id+"')"); }
+function doDeleteExpense(id){ DB.expenses = DB.expenses.filter(function(e){ return e.id!==id; }); saveDB(); closeSheet(); toast("Expense deleted."); render(); }
+
+/* ---------------- WHATSAPP CENTRE ---------------- */
+var waTab = "notice";
+function viewWhatsApp(){
+  var h = pageHead("WhatsApp Centre","Ready-made messages that open in WhatsApp for you to send — no unofficial auto-send tools, so the school number stays safe from blocking.");
+  var tabs = [["notice","Notice"],["diary","Daily diary"],["fee","Fee reminder"],["custom","Custom message"]];
+  h += '<div class="toolbar"><div class="seg">'+tabs.map(function(t){ return '<button class="'+(waTab===t[0]?"on":"")+'" onclick="waTab=\''+t[0]+'\';render()">'+t[1]+'</button>'; }).join("")+'</div></div>';
+  h += '<div class="card">';
+  if(waTab==="notice"){
+    if(!DB.notices.length){ h += '<p class="mut">No notices yet. <a href="#" onclick="go(\'notices\');return false;">Create a notice</a> first, then send it from here.</p>'; }
+    else {
+      var items = DB.notices.slice().sort(function(a,b){ return a.date<b.date?1:-1; });
+      h += items.map(function(n){ return '<div class="notice-item"><div class="meta">'+fmtDate(n.date)+'</div><h3>'+esc(n.title)+'</h3><div class="mut">'+esc(n.body)+'</div><div style="margin-top:8px"><button class="btn small wa" onclick="sendNoticeWA(\''+n.id+'\')">Send to a class</button></div></div>'; }).join("");
+    }
+  } else if(waTab==="diary"){
+    var items2 = DB.diary.slice().sort(function(a,b){ return a.date<b.date?1:-1; }).slice(0,10);
+    if(!items2.length){ h += '<p class="mut">No diary entries yet. <a href="#" onclick="go(\'diary\');return false;">Add today\'s diary</a> first.</p>'; }
+    else h += items2.map(function(d){ return '<div class="diary-item"><div class="meta">'+fmtDate(d.date)+' · '+esc(classLabel(d.cls))+' · '+esc(d.subject)+'</div><div>'+esc(d.homework)+'</div><div style="margin-top:8px"><button class="btn small wa" onclick="sendDiaryWA(\''+d.id+'\')">Send to class guardians</button></div></div>'; }).join("");
+  } else if(waTab==="fee"){
+    var pending = DB.fees.filter(function(f){ return studentById(f.studentId) && feeStatus(f)!=="paid"; }).sort(function(a,b){ return a.month<b.month?-1:1; });
+    if(!pending.length){ h += '<p class="mut">No pending fees right now. Generate challans in <a href="#" onclick="go(\'fees\');return false;">Fees</a> and unpaid students will appear here for reminders.</p>'; }
+    else h += pending.slice(0,60).map(function(f){ var s = studentById(f.studentId); var bal=(Number(f.amount)||0)-(Number(f.paid)||0);
+      var msg = "Assalam-o-Alaikum, this is "+DB.settings.name+". Fee reminder: "+money(bal)+" is pending for "+s.name+" ("+classLabel(s.cls)+") for "+monthName(f.month)+". Due date: "+fmtDate(f.dueDate)+". Please pay at the school office. JazakAllah.";
+      var link = waLink(s.phone, msg);
+      return '<div class="diary-item"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><div><b>'+esc(s.name)+'</b> <span class="meta">'+esc(classLabel(s.cls))+' · '+esc(monthName(f.month))+'</span></div><span class="pill due">'+money(bal)+' pending</span></div>'
+        + '<div style="margin-top:7px">'+(link? '<a class="btn small wa" target="_blank" rel="noopener" href="'+link+'">Send reminder to '+esc(s.guardian||"guardian")+'</a>' : '<span class="pill due">No WhatsApp number</span>')+'</div></div>'; }).join("");
+  } else {
+    h += '<div class="formgrid">'
+      + fieldHtml("Send to (student's guardian)", '<select id="wc_student">'+DB.students.map(function(s){ return '<option value="'+s.id+'">'+esc(s.name)+' — '+esc(classLabel(s.cls))+'</option>'; }).join("")+'</select>', true)
+      + fieldHtml("Your message", '<textarea id="wc_msg" placeholder="Type any message for the guardian…">Assalam-o-Alaikum, this is '+esc(DB.settings.name)+'. </textarea>', true)
+      + '</div><div style="margin-top:12px"><button class="btn wa" onclick="sendCustomWA()">Open in WhatsApp</button></div>'
+      + (DB.students.length===0? '<p class="mut" style="margin-top:10px">Admit students with guardian WhatsApp numbers first.</p>' : '');
+  }
+  h += '</div>';
+  h += '<p class="mut" style="margin-top:12px">How it works: tap a send button, WhatsApp opens with the message already written — check it and press send. Nothing is sent automatically.</p>';
+  return h;
+}
+function sendCustomWA(){
+  var sid = val("wc_student"); var s = studentById(sid); if(!s){ toast("Choose a student first."); return; }
+  var msg = document.getElementById("wc_msg").value.trim(); if(!msg){ toast("Write a message first."); return; }
+  var link = waLink(s.phone, msg); if(!link){ toast("No guardian WhatsApp number for this student."); return; }
+  window.open(link, "_blank");
+}
+
+/* ---------------- SETTINGS ---------------- */
+function viewSettings(){
+  var st = DB.settings;
+  var h = pageHead("School Settings","These details appear on the dashboard, fee vouchers and DMCs.");
+  h += '<div class="card"><div class="formgrid">'
+    + fieldHtml("School name", inp("sf_name", st.name), true)
+    + fieldHtml("Location", inp("sf_location", st.location))
+    + fieldHtml("Session", inp("sf_session", st.session))
+    + fieldHtml("Principal name", inp("sf_principal", st.principal, "text", 'placeholder="e.g. Hafiz Muhammad Rashid"'))
+    + fieldHtml("School phone", inp("sf_phone", st.phone, "tel", 'placeholder="03xx xxxxxxx"'))
+    + '</div><div style="margin-top:16px;display:flex;gap:9px;flex-wrap:wrap"><button class="btn primary" onclick="saveSettings()">Save settings</button></div></div>';
+  h += '<div class="card" style="margin-top:14px"><h3 style="font-size:18px;margin-bottom:6px">Install as a mobile app</h3>'
+    + '<p class="mut" style="margin:0 0 12px">Use the system full-screen like an app on the school phone.</p>'
+    + '<button class="btn gold" onclick="handleInstall()">⬇ Install App / Add to Home Screen</button>'
+    + '<div class="mut" style="margin-top:12px"><b>Android (Chrome):</b> tap Install above, or browser menu ⋮ → “Install app”.<br/><b>iPhone (Safari):</b> tap the Share button, then “Add to Home Screen”.</div></div>';
+  h += '<div class="card" style="margin-top:14px"><h3 style="font-size:18px;margin-bottom:6px">Your data — backup &amp; transfer</h3>'
+    + '<p class="mut" style="margin:0 0 12px">All data is saved <b>only in this browser</b> on this device. It is not uploaded anywhere and will not appear on another phone or computer by itself. Export a backup file regularly; import it on a new device to move everything across. Clearing the browser\'s site data would erase it.</p>'
+    + '<div style="display:flex;gap:9px;flex-wrap:wrap"><button class="btn" onclick="exportBackup()">⬇ Export backup (JSON)</button>'
+    + '<label class="btn" style="cursor:pointer">⬆ Import backup<input type="file" accept="application/json" style="display:none" onchange="importBackup(this)" /></label>'
+    + '<button class="btn danger" onclick="askWipe()">Erase all data</button></div>'
+    + '<p class="mut" style="margin-top:10px">Currently stored: '+DB.students.length+' students · '+DB.teachers.length+' teachers · '+DB.fees.length+' fee records · '+DB.expenses.length+' expenses.</p></div>';
+  h += '<div class="card" style="margin-top:14px"><h3 style="font-size:18px;margin-bottom:6px">Publish on GitHub Pages</h3>'
+    + '<p class="mut" style="margin:0">This page is a single self-contained <b>index.html</b>. To publish it: create a GitHub repository, upload this file as <b>index.html</b>, then turn on Settings → Pages → Deploy from branch (main). Remember: each visitor\'s data stays in their own browser — publishing the page does not share your school data.</p></div>';
+  return h;
+}
+function saveSettings(){
+  DB.settings = { name: val("sf_name")||"Al-Makkah Public School", location: val("sf_location"), session: val("sf_session"), principal: val("sf_principal"), phone: val("sf_phone") };
+  saveDB(); syncBrand(); toast("Settings saved."); render();
+}
+function syncBrand(){
+  var st = DB.settings;
+  document.getElementById("brandName").textContent = st.name;
+  document.getElementById("brandMeta").textContent = st.location+" · Session "+st.session;
+  document.getElementById("topName").textContent = st.name;
+  document.getElementById("topMeta").textContent = st.location+" · "+st.session;
+  document.title = st.name+" — Management System";
+}
+function exportBackup(){
+  var blob = new Blob([JSON.stringify(DB, null, 2)], {type:"application/json"});
+  var a = document.createElement("a"); a.href = URL.createObjectURL(blob);
+  a.download = "al-makkah-school-backup-"+todayStr()+".json"; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(function(){ URL.revokeObjectURL(a.href); }, 2000);
+  toast("Backup downloaded.");
+}
+function importBackup(input){
+  var file = input.files && input.files[0]; if(!file) return;
+  var reader = new FileReader();
+  reader.onload = function(){
+    try{
+      var d = JSON.parse(reader.result);
+      if(!d || !d.settings || !Array.isArray(d.students)) throw new Error("bad");
+      var b = blankState(); for(var k in b){ if(d[k]===undefined) d[k]=b[k]; }
+      DB = d; saveDB(); syncBrand(); toast("Backup imported — all data restored."); render();
+    }catch(e){ toast("That file is not a valid backup."); }
+  };
+  reader.readAsText(file);
+}
+function askWipe(){ confirmSheet("Erase ALL data?","Every student, fee, attendance, marks, diary, notice and expense record in this browser will be deleted permanently. Export a backup first if you need the data.","Erase everything","doWipe()"); }
+function doWipe(){ DB = blankState(); saveDB(); closeSheet(); syncBrand(); toast("All data erased. The system is empty again."); go("home"); }
+
+/* ---------------- PWA ---------------- */
+var deferredInstall = null;
+window.addEventListener("beforeinstallprompt", function(e){ e.preventDefault(); deferredInstall = e; });
+function isIOS(){ return /iphone|ipad|ipod/i.test(navigator.userAgent); }
+function isStandalone(){ return (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) || window.navigator.standalone===true; }
+function handleInstall(){
+  if(isStandalone()){ toast("The app is already installed on this device."); return; }
+  if(deferredInstall){ deferredInstall.prompt(); deferredInstall.userChoice.then(function(){ deferredInstall = null; }); return; }
+  openSheet('<h3>Install the school app</h3><div class="sub">Add Al-Makkah Public School to the home screen — it opens full-screen like an app and works offline.</div>'
+    + (isIOS()
+      ? '<p><b>On iPhone / iPad (Safari):</b></p><p class="mut">1. Tap the <b>Share</b> button (square with an arrow) at the bottom of Safari.<br/>2. Scroll down and tap <b>Add to Home Screen</b>.<br/>3. Tap <b>Add</b> — the school icon appears on your home screen.</p>'
+      : '<p><b>On Android (Chrome):</b></p><p class="mut">1. Tap the browser menu <b>⋮</b> (top right).<br/>2. Tap <b>Install app</b> or <b>Add to Home Screen</b>.<br/>3. Confirm — the school icon appears on your home screen.</p><p class="mut">On a computer (Chrome/Edge): use the install icon in the address bar.</p>')
+    + '<div class="foot"><button class="btn primary" onclick="closeSheet()">Got it</button></div>');
+}
+function setupManifest(){
+  var iconSvg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230b5d3b'/%3E%3Cpath d='M50 14 L86 40 V86 H14 V40 Z' fill='%23c9a227'/%3E%3Crect x='38' y='56' width='24' height='30' fill='%230b5d3b'/%3E%3Ccircle cx='50' cy='34' r='7' fill='%23fff'/%3E%3C/svg%3E";
+  var manifest = {
+    name: "Al-Makkah Public School Management System",
+    short_name: "Al-Makkah SMS",
+    description: "Students, attendance, fees, exams, diary, notices and WhatsApp messages for Al-Makkah Public School, Basti Siddique Abad.",
+    start_url: ".", scope: ".", display: "standalone", orientation: "portrait",
+    theme_color: "#0b5d3b", background_color: "#f4f6f2", lang: "en",
+    icons: [
+      {src: iconSvg, sizes: "192x192", type: "image/svg+xml", purpose: "any"},
+      {src: iconSvg, sizes: "512x512", type: "image/svg+xml", purpose: "any"},
+      {src: iconSvg, sizes: "512x512", type: "image/svg+xml", purpose: "maskable"}
+    ]
+  };
+  try{
+    var blob = new Blob([JSON.stringify(manifest)], {type:"application/json"});
+    var link = document.createElement("link"); link.rel = "manifest"; link.href = URL.createObjectURL(blob);
+    document.head.appendChild(link);
+  }catch(e){}
+  /* Service worker: works when this file is hosted with a sw.js alongside (e.g. GitHub Pages).
+     Inside a single-file bundle there is no separate file to register, so failures are ignored
+     and the offline banner + offline screen below act as the fallback. */
+  if("serviceWorker" in navigator){
+    try{ navigator.serviceWorker.register("sw.js").catch(function(){}); }catch(e){}
+  }
+}
+function setupOffline(){
+  var bar = document.getElementById("offlineBar");
+  function update(){
+    var off = !navigator.onLine;
+    bar.classList.toggle("show", off);
+  }
+  window.addEventListener("online", function(){ update(); toast("Back online."); });
+  window.addEventListener("offline", update);
+  update();
+  /* Offline fallback page: if the app is opened with no connection at all and nothing has
+     ever been saved on this device, show the offline screen instead of a broken page. */
+  if(!navigator.onLine && !localStorage.getItem(LS_KEY)){
+    document.getElementById("offlineFull").classList.add("show");
+    document.getElementById("appShell").style.display = "none";
+    document.getElementById("bottomNav").style.display = "none";
+  }
+}
+
+/* ---------------- INIT ---------------- */
+buildNav();
+syncBrand();
+setupManifest();
+setupOffline();
+go("home");
+</script>
+</body>
+</html>
